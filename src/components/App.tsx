@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import Hero from "./Hero"
 import Footer from "./Footer"
 import Header from "./Header"
@@ -23,6 +23,7 @@ const StyledApp = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: white;
 `
 
 const Grid = styled.div`

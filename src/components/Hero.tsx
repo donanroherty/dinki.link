@@ -18,12 +18,10 @@ const StyledHero = styled.div`
   display: flex;
   flex-direction: column;
   height: 500px;
-  background-color: lightcoral;
 `
 const IllustrationContainer = styled.div`
   height: 100%;
-  background-color: lightgreen;
-  padding: 20px;
+
   > div {
     background-color: lightblue;
     width: 100%;
@@ -32,7 +30,6 @@ const IllustrationContainer = styled.div`
 `
 const LinkInputWrapper = styled.div`
   height: 100px;
-  background-color: lightgoldenrodyellow;
   margin-top: auto;
   padding: 20px;
   > div {
