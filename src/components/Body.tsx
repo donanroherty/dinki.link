@@ -1,18 +1,26 @@
 import React from "react"
 import styled from "styled-components/macro"
+import Icon from "./Icon"
 
 function Body() {
   return (
     <StyledBody>
+      <p>
+        DinkyLink is a simple and free URL shortener built with React, Go and
+        lots of coffee.
+      </p>
       <div>
         <Card>
-          <div></div>
+          <Icon name="github" color="#4F5257" size={65} />
+          <h3>Open Source</h3>
         </Card>
         <Card>
-          <div></div>
+          <Icon name="test" color="#4F5257" size={65} />
+          <h3>Fully Tested</h3>
         </Card>
         <Card>
-          <div></div>
+          <Icon name="engineer" color="#4F5257" size={80} />
+          <h3>Over Engineered</h3>
         </Card>
       </div>
     </StyledBody>
@@ -20,31 +28,42 @@ function Body() {
 }
 
 const StyledBody = styled.div`
-  padding: 20px;
+  color: #4f5257;
+  padding: 0 36px;
+  padding-top: 20px;
+  margin-bottom: 38px;
+
+  > p {
+    text-align: center;
+    font-size: 16px;
+  }
+
   > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+
     :first-child {
       padding-top: 0;
     }
     > * :not(:first-child) {
-      padding-top: 10px;
+      margin-top: 37px;
     }
   }
 `
 const Card = styled.div`
-  width: 100px;
-  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  > svg {
+  }
 
-  > div {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    background-color: lightskyblue;
+  > h3 {
+    font-size: 16px;
+    margin-top: 29;
+    font-weight: 900;
   }
 `
 
