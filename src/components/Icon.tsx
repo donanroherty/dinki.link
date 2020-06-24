@@ -1,19 +1,26 @@
+import React from "react"
 import icons from "../icons"
 
 type Props = {
-  iconName: keyof typeof icons
+  name: keyof typeof icons
   color?: string
   size?: string | number
 }
 
 export default function Icon(props: Props) {
-  const { iconName, color = "red", size = "100%" } = props
+  const { name: iconName, color = "red", size = "100%" } = props
 
-  const jsxBase = icons[iconName](color)
-  const jsxUpdated = {
-    ...jsxBase,
-    props: { ...jsxBase.props, height: size, width: size },
+  const iconJsx = icons[iconName](color)
+
+  const Comp: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+    return {
+      ...iconJsx,
+      props: {
+        ...iconJsx.props,
+        ...props,
+      },
+    }
   }
 
-  return jsxUpdated
+  return <Comp data-testid="icon" {...props} width={size} height={size} />
 }

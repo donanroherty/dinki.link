@@ -7,10 +7,10 @@ function Header() {
     <StyledHeader>
       <Brand>Dinki Link</Brand>
       <Button>
-        <Icon iconName="github" color="#4F5257" size={16} />
+        <Icon name="github" color="#4F5257" size={16} />
       </Button>
       <Button>
-        <Icon iconName="daynight" color="#4F5257" size={20} />
+        <Icon name="daynight" color="#4F5257" size={20} />
       </Button>
     </StyledHeader>
   )
