@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
+import LinkInput from "./LinkInput"
 import { Link } from "react-scroll"
 
 function Hero() {
@@ -9,12 +10,13 @@ function Hero() {
       <IllustrationContainer>
         <div>Illustration</div>
       </IllustrationContainer>
-      <TagLine>
-        <em>Make your linky dinki</em>
-      </TagLine>
+
+      <TagLine>Make your linky dinki</TagLine>
+
       <LinkInputWrapper>
-        <div>LinkInput</div>
+        <LinkInput />
       </LinkInputWrapper>
+
       <StyledLink
         data-testid="scroll-button"
         to="body"
@@ -49,7 +51,7 @@ const IllustrationContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
-const TagLine = styled.div`
+const TagLine = styled.em`
   font-size: 30px;
   font-weight: 100;
   color: #4f5257;
@@ -59,11 +61,6 @@ const LinkInputWrapper = styled.div`
   width: 100%;
   height: 100px;
   margin-top: 20px;
-  > div {
-    background-color: lightblue;
-    width: 100%;
-    height: 100%;
-  }
 `
 const StyledLink = styled(Link)`
   margin-top: 42px;
