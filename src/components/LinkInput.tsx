@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 const LinkInput = () => {
   return (
-    <StyledLinkInput>
+    <Wrapper>
       <StyledInput
         type="text"
         name="Link Input"
@@ -12,16 +12,17 @@ const LinkInput = () => {
         autoFocus
       />
       <Button>Convert</Button>
-    </StyledLinkInput>
+    </Wrapper>
   )
 }
 
-const StyledLinkInput = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 45px;
   border-radius: 20px;
   background-color: white;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   overflow: hidden;
   padding: 4px;
@@ -29,6 +30,7 @@ const StyledLinkInput = styled.div`
 `
 const StyledInput = styled.input`
   width: 100%;
+  min-width: 0;
   height: 100%;
   font-size: 16px;
   border-style: none;
