@@ -36,9 +36,7 @@ function Hero() {
 
       <TagLine>Make your linky dinki</TagLine>
 
-      <LinkInputWrapper>
-        <LinkInput />
-      </LinkInputWrapper>
+      <LinkInput />
 
       <StyledLink
         to={flipAlpha < 0.5 ? "scroll-button" : "hero"}
@@ -85,11 +83,7 @@ const TagLine = styled.em`
   font-weight: 100;
   color: #4f5257;
   margin-top: 20px;
-`
-const LinkInputWrapper = styled.div`
-  width: 100%;
-  height: 100px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 `
 const StyledLink = styled(Link)`
   margin-top: 42px;
