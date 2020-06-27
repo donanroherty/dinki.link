@@ -64,7 +64,6 @@ const StyledHero = styled.div<{ flipalpha: number }>`
   align-items: center;
   height: 100vh;
   padding: 0 ${contentMargin}px;
-  // TODO: Animate padding-bottom to 0 on scroll
   padding-bottom: ${({ flipalpha }) => (flipalpha * -1 + 1) * 40}px;
   box-sizing: border-box;
   margin-top: -72px;
@@ -89,7 +88,6 @@ const StyledLink = styled(Link)`
   margin-top: 42px;
   padding: 20px;
 `
-
 const StyledIcon = styled(Icon)<{ flipalpha: number }>`
   transform: rotate(${({ flipalpha }) => flipalpha * 180}deg);
 `

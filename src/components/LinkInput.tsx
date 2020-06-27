@@ -1,51 +1,116 @@
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-import {
-  useSpring,
-  animated,
-  interpolate,
-  OpaqueInterpolation,
-} from "react-spring"
-import * as easings from "d3-ease"
+import { useSpring, animated, config } from "react-spring"
+import BusyIndicator from "./BusyIndicator"
+
+const CONVERT_BUTTON_PERC_WIDTH = 30
+
+const mapToRange = (
+  inMin: number,
+  inMax: number,
+  outMin: number,
+  outMax: number,
+  val: number
+) => {
+  const inRange = inMax - inMin
+  const inAlpha = (val - inMin) / inRange
+  const outRange = outMax - outMin
+  return outMin + outRange * inAlpha
+}
+
+enum InputState {
+  Initial,
+  ExpandButton,
+  ShowBusy,
+}
 
 const LinkInput = () => {
-  const [hasLink, setHasLink] = useState(false)
+  const [inputState, setInputState] = useState(InputState.Initial)
 
-  const { x } = useSpring({
-    from: { x: 0 },
-    x: hasLink ? 1 : 0,
-    config: { duration: 800, easing: easings.easeQuadInOut },
+  // Animate button
+  const expandBtnLeftStart = `calc(${100 - CONVERT_BUTTON_PERC_WIDTH}%)`
+  const expandBtnWidthStart = `${CONVERT_BUTTON_PERC_WIDTH}%`
+  const expand = useSpring({
+    from: {
+      left: (() => expandBtnLeftStart)(),
+      width: expandBtnWidthStart,
+    },
+    to: {
+      left: (() =>
+        inputState !== InputState.Initial ? `0` : expandBtnLeftStart)(),
+      width: inputState !== InputState.Initial ? `100%` : expandBtnWidthStart,
+    },
+    config: { delay: 0, tension: 300, friction: 30, velocity: 10 },
+    onRest: ({ width }) => {
+      if (width === "100%") {
+        setInputState(InputState.ShowBusy)
+      }
+    },
   })
+
+  // Animate circle wipe
+  const expandCircle = useSpring({
+    from: { width: 0, height: 0 },
+    to: {
+      width: inputState === InputState.ShowBusy ? 300 : 0,
+      height: inputState === InputState.ShowBusy ? 300 : 0,
+    },
+  })
+
+  const handleButtonClick = () => {
+    setInputState((curr) =>
+      curr === InputState.Initial ? InputState.ExpandButton : InputState.Initial
+    )
+  }
 
   return (
     <Wrapper>
-      <StyledInput
-        type="text"
-        name="Link Input"
-        id="link-input"
-        placeholder="enter a link..."
-        autoFocus
-      />
+      <div>
+        <StyledInput
+          type="text"
+          name="Link Input"
+          id="link-input"
+          placeholder="enter a link..."
+          autoFocus
+        />
 
-      <Button
-        style={{
-          left: x
-            // .interpolate({ range: [0, 1], output: [70, 0] })
-            .interpolate(
-              (x) => `calc(${x * 70 * -1 + 70}% - ${x * (4 * -1) + 4 * x}px)`
-            ),
-        }}
-        onClick={() => setHasLink(!hasLink)}
-      >
-        Convert
-      </Button>
+        <Button style={expand} onClick={handleButtonClick}>
+          {inputState !== InputState.ShowBusy && "Convert"}
+        </Button>
+
+        <CircleWrapper>
+          <Circle style={expandCircle} />
+
+          {inputState === InputState.ShowBusy && <BusyIndicator />}
+        </CircleWrapper>
+      </div>
     </Wrapper>
   )
 }
+const Wrapper = styled.div`
+  width: 100%;
+  height: 45px;
+  min-height: 45px;
+  border-radius: 20px;
+  background-color: white;
+  overflow: hidden;
+  padding: 4px;
+
+  > div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+`
 
 const Button = styled(animated.div)`
   position: absolute;
-  width: 30%;
+  left: calc(${100 - CONVERT_BUTTON_PERC_WIDTH}% - 4px);
+  width: ${CONVERT_BUTTON_PERC_WIDTH}%;
   height: 45px;
   background-color: #7db3ff;
   border-radius: 17px;
@@ -56,19 +121,7 @@ const Button = styled(animated.div)`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-`
-const Wrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 45px;
-  min-height: 45px;
-  border-radius: 20px;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-  padding: 4px;
+  user-select: none;
 `
 const StyledInput = styled.input`
   min-width: 0;
@@ -79,5 +132,22 @@ const StyledInput = styled.input`
   background-color: transparent;
   outline: none;
   margin-left: 18px;
+`
+const CircleWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+`
+const Circle = styled(animated.div)`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
 `
 export default LinkInput
