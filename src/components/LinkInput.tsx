@@ -1,89 +1,160 @@
 import React, { useState } from "react"
-import styled from "styled-components"
-import { useSpring, animated, config } from "react-spring"
+import styled from "styled-components/macro"
+import { motion, Variant, Spring } from "framer-motion"
 import BusyIndicator from "./BusyIndicator"
+import Icon from "./Icon"
 
-const CONVERT_BUTTON_PERC_WIDTH = 30
-
-const mapToRange = (
-  inMin: number,
-  inMax: number,
-  outMin: number,
-  outMax: number,
-  val: number
-) => {
-  const inRange = inMax - inMin
-  const inAlpha = (val - inMin) / inRange
-  const outRange = outMax - outMin
-  return outMin + outRange * inAlpha
+type AnimVariants = {
+  initial: Variant
+  busy: Variant
+  preResult: Variant
+  result: Variant
+  reset: Variant
 }
 
-enum InputState {
-  Initial,
-  ExpandButton,
-  ShowBusy,
+const convertBtnVars: AnimVariants = {
+  initial: { width: 90 },
+  busy: { width: "100%" },
+  preResult: { width: 0 },
+  result: { width: 90 },
+  reset: { width: 0 },
+}
+const resetBtnVars: AnimVariants = {
+  initial: { width: 0, left: 0 },
+  busy: { width: 0, left: 0 },
+  preResult: { width: 0 },
+  result: { width: 45 },
+  reset: { width: 0 },
+}
+const inputVars: AnimVariants = {
+  initial: { width: "calc(100% - 90px)", opacity: 1 },
+  busy: { width: "0%" },
+  preResult: {
+    width: "calc(100% - (90px + 50px))",
+    left: 35,
+    opacity: 0,
+    marginLeft: 0,
+  },
+  result: { opacity: 1 },
+  reset: { opacity: 0, left: 0 },
+}
+const circleVars: AnimVariants = {
+  initial: { width: 0, height: 0 },
+  busy: { width: 500, height: 500 },
+  preResult: { opacity: 0 },
+  result: { width: 0, height: 0 },
+  reset: { opacity: 1 },
+}
+const busyIndicatorVars: AnimVariants = {
+  initial: { opacity: 0 },
+  busy: { opacity: 1 },
+  preResult: { opacity: 0 },
+  result: { opacity: 0 },
+  reset: {},
+}
+
+const spring: Spring = {
+  type: "spring",
+  damping: 20,
+  stiffness: 100,
 }
 
 const LinkInput = () => {
-  const [inputState, setInputState] = useState(InputState.Initial)
+  const [animState, setAnimState] = useState<keyof AnimVariants>("initial")
 
-  // Animate button
-  const expandBtnLeftStart = `calc(${100 - CONVERT_BUTTON_PERC_WIDTH}%)`
-  const expandBtnWidthStart = `${CONVERT_BUTTON_PERC_WIDTH}%`
-  const expand = useSpring({
-    from: {
-      left: (() => expandBtnLeftStart)(),
-      width: expandBtnWidthStart,
-    },
-    to: {
-      left: (() =>
-        inputState !== InputState.Initial ? `0` : expandBtnLeftStart)(),
-      width: inputState !== InputState.Initial ? `100%` : expandBtnWidthStart,
-    },
-    config: { delay: 0, tension: 300, friction: 30, velocity: 10 },
-    onRest: ({ width }) => {
-      if (width === "100%") {
-        setInputState(InputState.ShowBusy)
-      }
-    },
-  })
+  const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
-  // Animate circle wipe
-  const expandCircle = useSpring({
-    from: { width: 0, height: 0 },
-    to: {
-      width: inputState === InputState.ShowBusy ? 300 : 0,
-      height: inputState === InputState.ShowBusy ? 300 : 0,
-    },
-  })
+  const convert = async () => {
+    setAnimState("busy")
 
-  const handleButtonClick = () => {
-    setInputState((curr) =>
-      curr === InputState.Initial ? InputState.ExpandButton : InputState.Initial
-    )
+    await new Promise((r) => setTimeout(r, 1000))
+    setAnimState("preResult")
+
+    await new Promise((r) => setTimeout(r, 500))
+    setAnimState("result")
   }
+
+  const reset = async () => {
+    setAnimState("reset")
+
+    await new Promise((r) => setTimeout(r, 1000))
+    setAnimState("initial")
+  }
+
+  const copy = () => {}
+
+  const immediate = { duration: 0.01 }
 
   return (
     <Wrapper>
-      <div>
-        <StyledInput
-          type="text"
-          name="Link Input"
-          id="link-input"
-          placeholder="enter a link..."
-          autoFocus
-        />
+      <Container>
+        <ResetButton
+          animate={animState}
+          transition={animState === "preResult" ? immediate : spring}
+          variants={resetBtnVars}
+          onClick={reset}
+        >
+          <Icon name="reset" size={20} color="#7db3ff" />
+        </ResetButton>
 
-        <Button style={expand} onClick={handleButtonClick}>
-          {inputState !== InputState.ShowBusy && "Convert"}
-        </Button>
+        <InputWrapper
+          animate={animState}
+          transition={
+            animState === "preResult"
+              ? immediate
+              : animState === "result"
+              ? { ...spring, delay: 0.3 }
+              : spring
+          }
+          variants={inputVars}
+        >
+          <StyledInput
+            type="text"
+            name="Link Output"
+            id="link-input"
+            onChange={handleLinkInput}
+            value={
+              animState === "result" || animState === "reset"
+                ? `dinki.link/your-link`
+                : `https:://google.com/your-link`
+            }
+            readOnly
+            autoFocus={true}
+            onFocus={(e) => e.target.select()}
+          />
+        </InputWrapper>
 
-        <CircleWrapper>
-          <Circle style={expandCircle} />
+        <ConvertButton
+          animate={animState}
+          transition={animState === "preResult" ? immediate : spring}
+          variants={convertBtnVars}
+          onClick={
+            animState === "result" || animState === "preResult"
+              ? copy
+              : animState === "initial"
+              ? convert
+              : undefined
+          }
+        >
+          <div style={{ position: "absolute" }}>
+            {animState === "result" ? "Copy" : "Convert"}
+          </div>
 
-          {inputState === InputState.ShowBusy && <BusyIndicator />}
-        </CircleWrapper>
-      </div>
+          <Circle
+            transition={{ ...spring, delay: 0.5 }}
+            variants={circleVars}
+          />
+        </ConvertButton>
+
+        <motion.div
+          animate={animState}
+          style={{ position: "absolute", opacity: 0 }}
+          transition={{ delay: 0.5, duration: 0.2 }}
+          variants={busyIndicatorVars}
+        >
+          <BusyIndicator />
+        </motion.div>
+      </Container>
     </Wrapper>
   )
 }
@@ -95,22 +166,17 @@ const Wrapper = styled.div`
   background-color: white;
   overflow: hidden;
   padding: 4px;
-
-  > div {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
 `
-
-const Button = styled(animated.div)`
-  position: absolute;
-  left: calc(${100 - CONVERT_BUTTON_PERC_WIDTH}% - 4px);
-  width: ${CONVERT_BUTTON_PERC_WIDTH}%;
+const Container = styled(motion.div)`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`
+const Button = styled(motion.div)`
   height: 45px;
   background-color: #7db3ff;
   border-radius: 17px;
@@ -121,9 +187,38 @@ const Button = styled(animated.div)`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  overflow: hidden;
   user-select: none;
 `
+const ConvertButton = styled(Button)`
+  width: 90px;
+  position: absolute;
+  right: 0;
+`
+const ResetButton = styled(Button)`
+  background-color: transparent;
+  width: 0%;
+  position: absolute;
+  left: 0;
+`
+const Circle = styled(motion.div)`
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+`
+const InputWrapper = styled(motion.div)`
+  position: absolute;
+  left: 0%;
+  height: 100%;
+  width: calc(100% - 90px);
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  /* background-color: red; */
+`
 const StyledInput = styled.input`
+  z-index: 10;
+  height: 100%;
   min-width: 0;
   height: 100%;
   font-size: 16px;
@@ -131,23 +226,7 @@ const StyledInput = styled.input`
   color: #4f5257;
   background-color: transparent;
   outline: none;
-  margin-left: 18px;
+  margin-left: 10px;
 `
-const CircleWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-`
-const Circle = styled(animated.div)`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`
+
 export default LinkInput
