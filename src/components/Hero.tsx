@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
 import LinkInput from "./LinkInput"
+import Illustration from "./Illustration"
 import { Link } from "react-scroll"
 import { useEvent } from "react-use"
 
@@ -31,7 +32,7 @@ function Hero() {
   return (
     <StyledHero ref={ref} id="hero" flipalpha={flipAlpha} data-testid="hero">
       <IllustrationContainer>
-        <div>Illustration</div>
+        <Illustration />
       </IllustrationContainer>
 
       <TagLine>Make your linky dinki</TagLine>
