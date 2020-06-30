@@ -3,6 +3,7 @@ import daynight from "./daynight"
 import engineer from "./engineer"
 import test from "./test"
 import triangle from "./triangle"
+import reset from "./reset"
 
 export default {
   github,
@@ -10,4 +11,5 @@ export default {
   engineer,
   test,
   triangle,
+  reset,
 }
