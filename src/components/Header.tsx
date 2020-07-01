@@ -1,20 +1,44 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
+import { Theme, getTheme, ThemeDefinition } from "../theme/theme"
+import { motion } from "framer-motion"
 
-function Header() {
+type Props = {
+  theme: Theme
+  toggleTheme: () => void
+}
+
+function Header(props: Props) {
+  const { theme, toggleTheme } = props
+
   return (
     <StyledHeader>
       <Brand>Dinki Link</Brand>
-      <Button>
-        <Icon name="github" color="#4F5257" size={16} />
-      </Button>
-      <Button>
-        <Icon name="daynight" color="#4F5257" size={20} />
-      </Button>
+
+      <MotionThemeWrapper
+        themeDef={getTheme(theme)}
+        render={(themeDef) => (
+          <Icon name="github" color={themeDef.textColor} size={24} />
+        )}
+      />
+
+      <MotionThemeWrapper
+        onClick={toggleTheme}
+        themeDef={getTheme(theme)}
+        render={(themeDef) => (
+          <Icon name="daynight" color={themeDef.textColor} size={24} />
+        )}
+      />
     </StyledHeader>
   )
 }
+// Wraps Icon to avoid provide theme props
+const MotionThemeWrapper = (props: {
+  render: (themeDef: ThemeDefinition) => JSX.Element
+  themeDef: ThemeDefinition
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}) => <Button onClick={props.onClick}>{props.render(props.themeDef)}</Button>
 
 const StyledHeader = styled.div`
   height: 72px;
@@ -29,7 +53,7 @@ const StyledHeader = styled.div`
   z-index: 10;
   > :nth-child(2) {
     margin-left: auto;
-    margin-right: 14px;
+    margin-right: 30px;
   }
 `
 const Brand = styled.div`
@@ -37,7 +61,7 @@ const Brand = styled.div`
   color: #7db3ff;
   font-weight: 900;
 `
-const Button = styled.div`
+const Button = styled(motion.div)`
   width: 28px;
   height: 28px;
   display: flex;

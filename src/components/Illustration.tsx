@@ -5,7 +5,11 @@ const Illustration = () => {
   return (
     <StyledIllustration>
       <IllustrationWrapper>
-        <img src="./assets/vector/illustration-day.svg" alt="illustration" />
+        <img
+          width="100%"
+          src="./assets/vector/illustration-day.svg"
+          alt="illustration"
+        />
       </IllustrationWrapper>
     </StyledIllustration>
   )
