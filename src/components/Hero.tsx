@@ -5,12 +5,19 @@ import LinkInput from "./LinkInput"
 import Illustration from "./Illustration"
 import { Link } from "react-scroll"
 import { useEvent } from "react-use"
+import { motion } from "framer-motion"
+import { Theme, getTheme } from "../theme/theme"
 
 const clamp = (val: number, min: number, max: number) => {
   return val < min ? min : val > max ? max : val
 }
 
-function Hero() {
+type Props = {
+  theme: Theme
+}
+function Hero(props: Props) {
+  const { theme } = props
+
   const ref = useRef<HTMLDivElement>(null)
   const [flipAlpha, setFlipAlpha] = useState(0)
 
@@ -20,8 +27,8 @@ function Hero() {
       const height = el.clientHeight
       const scrollHeight = window.scrollY
       const perc = scrollHeight / height
-      const min = 0.5
-      const max = 0.8
+      const min = 0.4
+      const max = 0.7
       const clamped = clamp(perc, min, max)
       const inputRange = max - min
       const alpha = (clamped - min) / inputRange
@@ -32,10 +39,12 @@ function Hero() {
   return (
     <StyledHero ref={ref} id="hero" flipalpha={flipAlpha} data-testid="hero">
       <IllustrationContainer>
-        <Illustration />
+        <Illustration theme={theme} />
       </IllustrationContainer>
 
-      <TagLine>Make your linky dinki</TagLine>
+      <TagLine animate={{ color: getTheme(theme).textColor }}>
+        Make your linky dinki
+      </TagLine>
 
       <LinkInput />
 
@@ -65,7 +74,7 @@ const StyledHero = styled.div<{ flipalpha: number }>`
   align-items: center;
   height: 100vh;
   padding: 0 ${contentMargin}px;
-  padding-bottom: ${({ flipalpha }) => (flipalpha * -1 + 1) * 40}px;
+  padding-bottom: ${({ flipalpha }) => (flipalpha * -1 + 1) * 100}px;
   box-sizing: border-box;
   margin-top: -72px;
 `
@@ -78,7 +87,7 @@ const IllustrationContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
-const TagLine = styled.em`
+const TagLine = styled(motion.em)`
   font-size: 30px;
   font-weight: 100;
   color: #4f5257;

@@ -1,13 +1,22 @@
 import React from "react"
 import styled from "styled-components"
+import { Theme } from "../theme/theme"
 
-const Illustration = () => {
+type Props = {
+  theme: Theme
+}
+const Illustration = (props: Props) => {
+  const { theme } = props
   return (
     <StyledIllustration>
       <IllustrationWrapper>
         <img
           width="100%"
-          src="./assets/vector/illustration-day.svg"
+          src={
+            theme === Theme.light
+              ? "./assets/vector/illustration-day.svg"
+              : "./assets/vector/illustration-night.svg"
+          }
           alt="illustration"
         />
       </IllustrationWrapper>

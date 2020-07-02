@@ -18,7 +18,7 @@ const lightTheme: ThemeDefinition = {
 const darkTheme: ThemeDefinition = {
   brandColor: "#7DB3FF",
   textColor: "#D4D4D4",
-  backgroundColor: "#4F5257",
+  backgroundColor: "#2E3033",
 }
 
 export const getTheme = (theme: Theme): ThemeDefinition => {

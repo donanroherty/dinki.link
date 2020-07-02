@@ -33,6 +33,7 @@ function Header(props: Props) {
     </StyledHeader>
   )
 }
+
 // Wraps Icon to avoid provide theme props
 const MotionThemeWrapper = (props: {
   render: (themeDef: ThemeDefinition) => JSX.Element

@@ -1,14 +1,22 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { Theme, getTheme } from "../theme/theme"
+import { motion } from "framer-motion"
 
-function Footer() {
+type Props = {
+  theme: Theme
+}
+function Footer(props: Props) {
+  const { theme } = props
   return (
     <StyledFooter>
       <div>
         <a href="http://ronandoherty.com">
           <em>ronandoherty.com</em>
         </a>
-        <div>© Ronan Doherty 2020</div>
+        <motion.div animate={{ color: getTheme(theme).textColor }}>
+          © Ronan Doherty 2020
+        </motion.div>
       </div>
     </StyledFooter>
   )

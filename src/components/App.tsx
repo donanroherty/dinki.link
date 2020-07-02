@@ -20,9 +20,9 @@ function App() {
     <StyledApp bgColor={bgColor} animate={{ backgroundColor: bgColor }}>
       <Header theme={theme} toggleTheme={toggleTheme} />
       <Grid>
-        <Hero />
-        <Body />
-        <Footer />
+        <Hero theme={theme} />
+        <Body theme={theme} />
+        <Footer theme={theme} />
       </Grid>
     </StyledApp>
   )
