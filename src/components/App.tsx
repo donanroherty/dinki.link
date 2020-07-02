@@ -17,7 +17,11 @@ function App() {
   const bgColor = getTheme(theme).backgroundColor
 
   return (
-    <StyledApp bgColor={bgColor} animate={{ backgroundColor: bgColor }}>
+    <StyledApp
+      bgColor={bgColor}
+      animate={{ backgroundColor: bgColor }}
+      transition={{ ease: "easeInOut" }}
+    >
       <Header theme={theme} toggleTheme={toggleTheme} />
       <Grid>
         <Hero theme={theme} />

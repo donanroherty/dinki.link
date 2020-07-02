@@ -1,33 +1,29 @@
 import React from "react"
 import styled from "styled-components"
 import { Theme } from "../theme/theme"
+import { motion } from "framer-motion"
 
 type Props = {
   theme: Theme
+  path: string
+  hide?: boolean
 }
 const Illustration = (props: Props) => {
-  const { theme } = props
+  const { path, hide } = props
   return (
-    <StyledIllustration>
+    <StyledIllustration animate={{ opacity: hide ? 0 : 1 }}>
       <IllustrationWrapper>
-        <img
-          width="100%"
-          src={
-            theme === Theme.light
-              ? "./assets/vector/illustration-day.svg"
-              : "./assets/vector/illustration-night.svg"
-          }
-          alt="illustration"
-        />
+        <img width="100%" src={path} alt="illustration" />
       </IllustrationWrapper>
     </StyledIllustration>
   )
 }
 
-const StyledIllustration = styled.div``
-
-const IllustrationWrapper = styled.div`
+const StyledIllustration = styled(motion.div)`
   margin-top: 30px;
+  position: absolute;
 `
+
+const IllustrationWrapper = styled.div``
 
 export default Illustration

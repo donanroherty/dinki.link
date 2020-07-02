@@ -39,7 +39,15 @@ function Hero(props: Props) {
   return (
     <StyledHero ref={ref} id="hero" flipalpha={flipAlpha} data-testid="hero">
       <IllustrationContainer>
-        <Illustration theme={theme} />
+        <Illustration
+          theme={theme}
+          path="./assets/vector/illustration-night.svg"
+        />
+        <Illustration
+          theme={theme}
+          path="./assets/vector/illustration-day.svg"
+          hide={theme === Theme.dark}
+        />
       </IllustrationContainer>
 
       <TagLine animate={{ color: getTheme(theme).textColor }}>
