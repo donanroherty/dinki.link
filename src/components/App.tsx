@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
 import Hero from "./Hero"
 import Footer from "./Footer"
@@ -34,6 +34,7 @@ function App() {
 
 const StyledApp = styled(motion.div)<{ bgColor: string }>`
   width: 100%;
+  height: 100vh;
   height: 100%;
   display: flex;
   flex-direction: column;

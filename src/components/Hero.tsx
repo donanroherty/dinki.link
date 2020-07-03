@@ -21,23 +21,30 @@ function Hero(props: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [flipAlpha, setFlipAlpha] = useState(0)
 
-  useEvent("scroll", (e: React.UIEvent<HTMLButtonElement, UIEvent>) => {
+  const getElScrollAlpha = (rangeMin: number, rangeMax: number) => {
     const el = ref.current
     if (el) {
       const height = el.clientHeight
       const scrollHeight = window.scrollY
       const perc = scrollHeight / height
-      const min = 0.4
-      const max = 0.7
-      const clamped = clamp(perc, min, max)
-      const inputRange = max - min
-      const alpha = (clamped - min) / inputRange
-      setFlipAlpha(alpha)
+      const clamped = clamp(perc, rangeMin, rangeMax)
+      const inputRange = rangeMax - rangeMin
+      const alpha = (clamped - rangeMin) / inputRange
+      return alpha
+    }
+
+    return 0
+  }
+
+  useEvent("scroll", (e: React.UIEvent<HTMLButtonElement, UIEvent>) => {
+    const el = ref.current
+    if (el) {
+      setFlipAlpha(getElScrollAlpha(0.4, 0.7))
     }
   })
 
   return (
-    <StyledHero ref={ref} id="hero" flipalpha={flipAlpha} data-testid="hero">
+    <StyledHero ref={ref} id="hero" data-testid="hero">
       <IllustrationContainer>
         <Illustration
           theme={theme}
@@ -76,13 +83,13 @@ function Hero(props: Props) {
 
 const contentMargin = 36
 
-const StyledHero = styled.div<{ flipalpha: number }>`
+const StyledHero = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   padding: 0 ${contentMargin}px;
-  padding-bottom: ${({ flipalpha }) => (flipalpha * -1 + 1) * 100}px;
+  padding-bottom: 30px;
   box-sizing: border-box;
   margin-top: -72px;
 `
