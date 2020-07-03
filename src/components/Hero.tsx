@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
 import LinkInput from "./LinkInput"
-import Illustration from "./Illustration"
 import { Link } from "react-scroll"
 import { useEvent } from "react-use"
 import { motion } from "framer-motion"
@@ -45,17 +44,25 @@ function Hero(props: Props) {
 
   return (
     <StyledHero ref={ref} id="hero" data-testid="hero">
-      <IllustrationContainer>
-        <Illustration
-          theme={theme}
-          path="./assets/vector/illustration-night.svg"
-        />
-        <Illustration
-          theme={theme}
-          path="./assets/vector/illustration-day.svg"
-          hide={theme === Theme.dark}
-        />
-      </IllustrationContainer>
+      <IllustrationSection>
+        <div>
+          <img
+            width="100%"
+            src="./assets/vector/illustration-night.svg"
+            alt="illustration"
+          />
+        </div>
+        <div>
+          <motion.img
+            width="100%"
+            src="./assets/vector/illustration-day.svg"
+            alt="illustration"
+            animate={{
+              opacity: theme === Theme.dark ? 0 : 1,
+            }}
+          />
+        </div>
+      </IllustrationSection>
 
       <TagLine animate={{ color: getTheme(theme).textColor }}>
         Make your linky dinki
@@ -87,20 +94,26 @@ const StyledHero = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
   height: calc(var(--vh, 1vh) * 100);
   padding: 0 ${contentMargin}px;
   padding-bottom: 30px;
-  box-sizing: border-box;
   margin-top: -72px;
 `
-const IllustrationContainer = styled.div`
+const IllustrationSection = styled.div`
   height: 100%;
   width: calc(100% + ${contentMargin}px + ${contentMargin}px);
   margin-left: -${contentMargin}px;
   margin-right: -${contentMargin}px;
-  display: flex;
-  justify-content: center;
+  padding-top: 60px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
+  > div {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
 `
 const TagLine = styled(motion.em)`
   font-size: 30px;

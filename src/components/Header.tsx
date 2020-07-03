@@ -19,7 +19,11 @@ function Header(props: Props) {
       <MotionThemeWrapper
         themeDef={getTheme(theme)}
         render={(themeDef) => (
-          <a href="https://github.com/donanroherty/dinki.link" target="_blank">
+          <a
+            href="https://github.com/donanroherty/dinki.link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon name="github" color={themeDef.textColor} size={22} />
           </a>
         )}
