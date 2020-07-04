@@ -1,13 +1,21 @@
 import React from "react"
 import { render, fireEvent } from "@testing-library/react"
-import Hero from "../Hero"
-import App from "../App"
+import App, { THEME_ANIM_DURATION } from "../App"
 import "jest-styled-components"
 
-it("alters bottom padding on scroll", () => {
-  const { getByTestId } = render(<Hero />)
+it("responds correctly to theme change", async () => {
+  const { getByAltText, getByRole } = render(<App />)
 
-  expect(getByTestId("hero")).toHaveStyleRule("padding-bottom", "40px")
-  fireEvent.scroll(window, { target: { scrollY: window.innerHeight } })
-  expect(getByTestId("hero")).toHaveStyleRule("padding-bottom", "0px")
+  getByAltText("illustration-night")
+
+  expect(
+    window.getComputedStyle(getByAltText("illustration-day")).opacity
+  ).toBe("1")
+
+  fireEvent.click(getByRole("button", { name: /toggle theme/i }))
+  await new Promise((r) => setTimeout(r, THEME_ANIM_DURATION * 1000))
+
+  expect(
+    window.getComputedStyle(getByAltText("illustration-day")).opacity
+  ).toBe("0")
 })

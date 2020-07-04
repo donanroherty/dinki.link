@@ -1,20 +1,55 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
+import { Theme } from "../theme/theme"
 
-function Header() {
+type Props = {
+  theme: Theme
+  toggleTheme: () => void
+}
+
+function Header(props: Props) {
+  const { theme, toggleTheme } = props
+
+  const navigateToRepo = () => {
+    window.open(
+      "https://github.com/donanroherty/dinki.link",
+      "_blank",
+      "noopener noreferrer"
+    )
+  }
+
   return (
     <StyledHeader>
-      <Brand>Dinki Link</Brand>
-      <Button>
-        <Icon name="github" color="#4F5257" size={16} />
-      </Button>
-      <Button>
-        <Icon name="daynight" color="#4F5257" size={20} />
-      </Button>
+      <Brand color={theme.brandColor}>Dinki Link</Brand>
+
+      <IconWrapper role="button" title="github repo" onClick={navigateToRepo}>
+        <MotionThemeWrapper
+          theme={theme}
+          render={(themeDef) => (
+            <Icon name="github" color={themeDef.textColor} size={22} />
+          )}
+        />
+      </IconWrapper>
+
+      <IconWrapper role="button" title="toggle theme" onClick={toggleTheme}>
+        <MotionThemeWrapper
+          theme={theme}
+          render={(themeDef) => (
+            <Icon name="daynight" color={themeDef.textColor} size={24} />
+          )}
+        />
+      </IconWrapper>
     </StyledHeader>
   )
 }
+
+// Wraps Icon to avoid provide theme props
+const MotionThemeWrapper = (props: {
+  render: (themeDef: Theme) => JSX.Element
+  theme: Theme
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}) => props.render(props.theme)
 
 const StyledHeader = styled.div`
   height: 72px;
@@ -29,20 +64,24 @@ const StyledHeader = styled.div`
   z-index: 10;
   > :nth-child(2) {
     margin-left: auto;
-    margin-right: 14px;
+    margin-right: 20px;
   }
 `
-const Brand = styled.div`
+const Brand = styled.div<{ color: string }>`
   font-size: 27px;
-  color: #7db3ff;
+  color: ${({ color }) => color};
   font-weight: 900;
 `
-const Button = styled.div`
+const IconWrapper = styled.button`
   width: 28px;
   height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  box-sizing: content-box;
 `
 
 export default Header

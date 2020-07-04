@@ -2,38 +2,70 @@ import React, { useRef, useState } from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
 import LinkInput from "./LinkInput"
-import Illustration from "./Illustration"
 import { Link } from "react-scroll"
 import { useEvent } from "react-use"
+import { motion } from "framer-motion"
+import { Theme } from "../theme/theme"
+import { THEME_ANIM_DURATION } from "./App"
 
 const clamp = (val: number, min: number, max: number) => {
   return val < min ? min : val > max ? max : val
 }
 
-function Hero() {
+type Props = {
+  theme: Theme
+}
+function Hero(props: Props) {
+  const { theme } = props
+
   const ref = useRef<HTMLDivElement>(null)
   const [flipAlpha, setFlipAlpha] = useState(0)
 
-  useEvent("scroll", (e: React.UIEvent<HTMLButtonElement, UIEvent>) => {
+  const getElScrollAlpha = (rangeMin: number, rangeMax: number) => {
     const el = ref.current
     if (el) {
       const height = el.clientHeight
       const scrollHeight = window.scrollY
       const perc = scrollHeight / height
-      const min = 0.5
-      const max = 0.8
-      const clamped = clamp(perc, min, max)
-      const inputRange = max - min
-      const alpha = (clamped - min) / inputRange
-      setFlipAlpha(alpha)
+      const clamped = clamp(perc, rangeMin, rangeMax)
+      const inputRange = rangeMax - rangeMin
+      const alpha = (clamped - rangeMin) / inputRange
+      return alpha
+    }
+
+    return 0
+  }
+
+  useEvent("scroll", (e: React.UIEvent<HTMLButtonElement, UIEvent>) => {
+    const el = ref.current
+    if (el) {
+      setFlipAlpha(getElScrollAlpha(0.4, 0.7))
     }
   })
 
   return (
-    <StyledHero ref={ref} id="hero" flipalpha={flipAlpha} data-testid="hero">
-      <IllustrationContainer>
-        <Illustration />
-      </IllustrationContainer>
+    <StyledHero ref={ref} id="hero" data-testid="hero">
+      <IllustrationSection>
+        <div>
+          <img
+            width="100%"
+            src="./assets/vector/illustration-night.svg"
+            alt="illustration-night"
+          />
+        </div>
+        <div>
+          <motion.img
+            width="100%"
+            src="./assets/vector/illustration-day.svg"
+            alt="illustration-day"
+            initial={{ opacity: theme.name === "dark" ? 0 : 1 }}
+            animate={{
+              opacity: theme.name === "dark" ? 0 : 1,
+            }}
+            transition={{ duration: THEME_ANIM_DURATION }}
+          />
+        </div>
+      </IllustrationSection>
 
       <TagLine>Make your linky dinki</TagLine>
 
@@ -59,29 +91,34 @@ function Hero() {
 
 const contentMargin = 36
 
-const StyledHero = styled.div<{ flipalpha: number }>`
+const StyledHero = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
   padding: 0 ${contentMargin}px;
-  padding-bottom: ${({ flipalpha }) => (flipalpha * -1 + 1) * 40}px;
-  box-sizing: border-box;
+  padding-bottom: 30px;
   margin-top: -72px;
 `
-const IllustrationContainer = styled.div`
+const IllustrationSection = styled.div`
   height: 100%;
   width: calc(100% + ${contentMargin}px + ${contentMargin}px);
   margin-left: -${contentMargin}px;
   margin-right: -${contentMargin}px;
-  display: flex;
-  justify-content: center;
+  padding-top: 60px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
+  > div {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
 `
-const TagLine = styled.em`
+const TagLine = styled(motion.em)`
   font-size: 30px;
   font-weight: 100;
-  color: #4f5257;
   margin-top: 20px;
   margin-bottom: 20px;
 `

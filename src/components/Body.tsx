@@ -1,36 +1,67 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
+import { motion } from "framer-motion"
+import { Theme } from "../theme/theme"
 
-function Body() {
+type Props = {
+  theme: Theme
+}
+
+function Body(props: Props) {
+  const { theme } = props
+
   return (
     <StyledBody>
-      <p>
+      <motion.p>
         DinkyLink is a simple and free URL shortener built with React, Go and
         lots of coffee.
-      </p>
+      </motion.p>
       <div>
         <Card>
-          <Icon name="github" color="#4F5257" size={65} />
+          <MotionThemeWrapper
+            themeDef={theme}
+            render={(themeDef) => (
+              <Icon name="github" color={themeDef.textColor} size={65} />
+            )}
+          />
           <h3>Open Source</h3>
         </Card>
+
         <Card>
-          <Icon name="test" color="#4F5257" size={65} />
+          <MotionThemeWrapper
+            themeDef={theme}
+            render={(themeDef) => (
+              <Icon name="test" color={themeDef.textColor} size={65} />
+            )}
+          />
           <h3>Fully Tested</h3>
         </Card>
+
         <Card>
-          <Icon name="engineer" color="#4F5257" size={80} />
-          <h3>Over Engineered</h3>
+          <MotionThemeWrapper
+            themeDef={theme}
+            render={(themeDef) => (
+              <Icon name="engineer" color={themeDef.textColor} size={65} />
+            )}
+          />
+          <h3 style={{ color: theme.textColor }}>Over Engineered</h3>
         </Card>
       </div>
     </StyledBody>
   )
 }
 
+// Wraps Icon to avoid provide theme props
+const MotionThemeWrapper = (props: {
+  render: (themeDef: Theme) => JSX.Element
+  themeDef: Theme
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}) => <div onClick={props.onClick}>{props.render(props.themeDef)}</div>
+
 const StyledBody = styled.div`
-  color: #4f5257;
+  /* color: #4f5257; */
   padding: 0 36px;
-  /* padding-top: 20px; */
   margin-bottom: 38px;
 
   > p {
@@ -52,7 +83,7 @@ const StyledBody = styled.div`
     }
   }
 `
-const Card = styled.div`
+const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
