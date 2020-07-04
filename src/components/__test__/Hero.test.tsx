@@ -4,10 +4,9 @@ import Hero from "../Hero"
 import App from "../App"
 import "jest-styled-components"
 
-it("alters bottom padding on scroll", () => {
-  const { getByTestId } = render(<Hero />)
-
-  expect(getByTestId("hero")).toHaveStyleRule("padding-bottom", "40px")
-  fireEvent.scroll(window, { target: { scrollY: window.innerHeight } })
-  expect(getByTestId("hero")).toHaveStyleRule("padding-bottom", "0px")
+it("rotates arrow on scroll ", () => {
+  // const {} = render(<App />)
 })
+
+// it("should scroll page to bottom if arrow is clicked and page is near top", () => {})
+// it("should scroll page to top if arrow is clicked and page is near bottom", () => {})

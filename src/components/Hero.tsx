@@ -5,7 +5,8 @@ import LinkInput from "./LinkInput"
 import { Link } from "react-scroll"
 import { useEvent } from "react-use"
 import { motion } from "framer-motion"
-import { Theme, getTheme } from "../theme/theme"
+import { Theme } from "../theme/theme"
+import { THEME_ANIM_DURATION } from "./App"
 
 const clamp = (val: number, min: number, max: number) => {
   return val < min ? min : val > max ? max : val
@@ -58,15 +59,14 @@ function Hero(props: Props) {
             src="./assets/vector/illustration-day.svg"
             alt="illustration"
             animate={{
-              opacity: theme === Theme.dark ? 0 : 1,
+              opacity: theme.name === "dark" ? 0 : 1,
             }}
+            transition={{ duration: THEME_ANIM_DURATION }}
           />
         </div>
       </IllustrationSection>
 
-      <TagLine animate={{ color: getTheme(theme).textColor }}>
-        Make your linky dinki
-      </TagLine>
+      <TagLine>Make your linky dinki</TagLine>
 
       <LinkInput />
 
@@ -118,7 +118,6 @@ const IllustrationSection = styled.div`
 const TagLine = styled(motion.em)`
   font-size: 30px;
   font-weight: 100;
-  color: #4f5257;
   margin-top: 20px;
   margin-bottom: 20px;
 `

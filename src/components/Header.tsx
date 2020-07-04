@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
-import { Theme, getTheme, ThemeDefinition } from "../theme/theme"
+import { Theme } from "../theme/theme"
 import { motion } from "framer-motion"
 
 type Props = {
@@ -14,10 +14,10 @@ function Header(props: Props) {
 
   return (
     <StyledHeader>
-      <Brand>Dinki Link</Brand>
+      <Brand color={theme.brandColor}>Dinki Link</Brand>
 
       <MotionThemeWrapper
-        themeDef={getTheme(theme)}
+        themeDef={theme}
         render={(themeDef) => (
           <a
             href="https://github.com/donanroherty/dinki.link"
@@ -31,7 +31,7 @@ function Header(props: Props) {
 
       <MotionThemeWrapper
         onClick={toggleTheme}
-        themeDef={getTheme(theme)}
+        themeDef={theme}
         render={(themeDef) => (
           <Icon name="daynight" color={themeDef.textColor} size={24} />
         )}
@@ -42,8 +42,8 @@ function Header(props: Props) {
 
 // Wraps Icon to avoid provide theme props
 const MotionThemeWrapper = (props: {
-  render: (themeDef: ThemeDefinition) => JSX.Element
-  themeDef: ThemeDefinition
+  render: (themeDef: Theme) => JSX.Element
+  themeDef: Theme
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }) => <Button onClick={props.onClick}>{props.render(props.themeDef)}</Button>
 
@@ -63,9 +63,9 @@ const StyledHeader = styled.div`
     margin-right: 30px;
   }
 `
-const Brand = styled.div`
+const Brand = styled.div<{ color: string }>`
   font-size: 27px;
-  color: #7db3ff;
+  color: ${({ color }) => color};
   font-weight: 900;
 `
 const Button = styled(motion.div)`

@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components/macro"
 import Icon from "./Icon"
 import { motion } from "framer-motion"
-import { ThemeDefinition, Theme, getTheme } from "../theme/theme"
+import { Theme } from "../theme/theme"
 
 type Props = {
   theme: Theme
@@ -13,40 +13,39 @@ function Body(props: Props) {
 
   return (
     <StyledBody>
-      <motion.p animate={{ color: getTheme(theme).textColor }}>
+      <motion.p>
         DinkyLink is a simple and free URL shortener built with React, Go and
         lots of coffee.
       </motion.p>
       <div>
         <Card>
           <MotionThemeWrapper
-            themeDef={getTheme(theme)}
+            themeDef={theme}
             render={(themeDef) => (
               <Icon name="github" color={themeDef.textColor} size={65} />
             )}
           />
-
-          <h3 style={{ color: getTheme(theme).textColor }}>Open Source</h3>
+          <h3>Open Source</h3>
         </Card>
 
         <Card>
           <MotionThemeWrapper
-            themeDef={getTheme(theme)}
+            themeDef={theme}
             render={(themeDef) => (
               <Icon name="test" color={themeDef.textColor} size={65} />
             )}
           />
-          <h3 style={{ color: getTheme(theme).textColor }}>Fully Tested</h3>
+          <h3>Fully Tested</h3>
         </Card>
 
         <Card>
           <MotionThemeWrapper
-            themeDef={getTheme(theme)}
+            themeDef={theme}
             render={(themeDef) => (
               <Icon name="engineer" color={themeDef.textColor} size={65} />
             )}
           />
-          <h3 style={{ color: getTheme(theme).textColor }}>Over Engineered</h3>
+          <h3 style={{ color: theme.textColor }}>Over Engineered</h3>
         </Card>
       </div>
     </StyledBody>
@@ -55,13 +54,13 @@ function Body(props: Props) {
 
 // Wraps Icon to avoid provide theme props
 const MotionThemeWrapper = (props: {
-  render: (themeDef: ThemeDefinition) => JSX.Element
-  themeDef: ThemeDefinition
+  render: (themeDef: Theme) => JSX.Element
+  themeDef: Theme
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }) => <div onClick={props.onClick}>{props.render(props.themeDef)}</div>
 
 const StyledBody = styled.div`
-  color: #4f5257;
+  /* color: #4f5257; */
   padding: 0 36px;
   margin-bottom: 38px;
 
