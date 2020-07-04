@@ -6,11 +6,19 @@ import Header from "./Header"
 import Body from "./Body"
 import { ThemeName, getTheme } from "../theme/theme"
 import { motion } from "framer-motion"
+import "styled-components/macro"
 
-export const THEME_ANIM_DURATION = 1
+declare module "react" {
+  interface HTMLAttributes<T> {
+    css?: any
+  }
+}
+
+export const THEME_ANIM_DURATION = 0.5
+export const DEFAULT_THEME: ThemeName = "light"
 
 function App() {
-  const [themeName, setThemeName] = useState<"light" | "dark">("light")
+  const [themeName, setThemeName] = useState<ThemeName>(DEFAULT_THEME)
 
   const toggleTheme = () => {
     setThemeName((t: ThemeName) => (t === "light" ? "dark" : "light"))

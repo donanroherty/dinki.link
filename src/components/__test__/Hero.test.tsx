@@ -1,12 +1,21 @@
 import React from "react"
 import { render, fireEvent } from "@testing-library/react"
-import Hero from "../Hero"
-import App from "../App"
+import App, { THEME_ANIM_DURATION } from "../App"
 import "jest-styled-components"
 
-it("rotates arrow on scroll ", () => {
-  // const {} = render(<App />)
-})
+it("responds correctly to theme change", async () => {
+  const { getByAltText, getByRole } = render(<App />)
 
-// it("should scroll page to bottom if arrow is clicked and page is near top", () => {})
-// it("should scroll page to top if arrow is clicked and page is near bottom", () => {})
+  getByAltText("illustration-night")
+
+  expect(
+    window.getComputedStyle(getByAltText("illustration-day")).opacity
+  ).toBe("1")
+
+  fireEvent.click(getByRole("button", { name: /toggle theme/i }))
+  await new Promise((r) => setTimeout(r, THEME_ANIM_DURATION * 1000))
+
+  expect(
+    window.getComputedStyle(getByAltText("illustration-day")).opacity
+  ).toBe("0")
+})

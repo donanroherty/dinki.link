@@ -50,14 +50,15 @@ function Hero(props: Props) {
           <img
             width="100%"
             src="./assets/vector/illustration-night.svg"
-            alt="illustration"
+            alt="illustration-night"
           />
         </div>
         <div>
           <motion.img
             width="100%"
             src="./assets/vector/illustration-day.svg"
-            alt="illustration"
+            alt="illustration-day"
+            initial={{ opacity: theme.name === "dark" ? 0 : 1 }}
             animate={{
               opacity: theme.name === "dark" ? 0 : 1,
             }}
