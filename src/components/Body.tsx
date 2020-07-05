@@ -88,6 +88,7 @@ const StyledBody = styled.div`
     }
 
     @media screen and (${devices.tablet}) {
+      margin-top: 50px;
       flex-direction: row;
       justify-content: space-around;
     }
