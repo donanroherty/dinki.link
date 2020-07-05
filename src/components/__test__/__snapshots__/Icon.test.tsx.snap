@@ -3,7 +3,6 @@
 exports[`<Icon/> matches snapshot 1`] = `
 <svg
   color="red"
-  data-testid="icon"
   height="5"
   name="daynight"
   size="5"

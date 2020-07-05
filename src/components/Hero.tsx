@@ -44,7 +44,7 @@ function Hero(props: Props) {
   })
 
   return (
-    <StyledHero ref={ref} id="hero" data-testid="hero">
+    <StyledHero ref={ref} id="hero">
       <IllustrationSection>
         <div>
           <img

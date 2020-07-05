@@ -22,5 +22,5 @@ export default function Icon(props: Props) {
     }
   }
 
-  return <Comp data-testid="icon" {...props} width={size} height={size} />
+  return <Comp {...props} width={size} height={size} />
 }
