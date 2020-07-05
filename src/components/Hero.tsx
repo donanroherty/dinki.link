@@ -7,6 +7,8 @@ import { useEvent } from "react-use"
 import { motion } from "framer-motion"
 import { Theme } from "../theme/theme"
 import { THEME_ANIM_DURATION } from "./App"
+import { devices } from "../theme/style"
+import "styled-components/macro"
 
 const clamp = (val: number, min: number, max: number) => {
   return val < min ? min : val > max ? max : val
@@ -67,9 +69,16 @@ function Hero(props: Props) {
         </div>
       </IllustrationSection>
 
-      <TagLine>Make your linky dinki</TagLine>
-
-      <LinkInput />
+      <InputAndTagWrapper>
+        <TagLine>Make your linky dinki</TagLine>
+        <motion.p>
+          DinkyLink is a simple and free URL shortener built with React, Go and
+          lots of coffee.
+        </motion.p>
+        <LinkInputWrapper>
+          <LinkInput />
+        </LinkInputWrapper>
+      </InputAndTagWrapper>
 
       <StyledLink
         to={flipAlpha < 0.5 ? "scroll-button" : "hero"}
@@ -97,15 +106,22 @@ const StyledHero = styled(motion.div)`
   align-items: center;
   height: 100%;
   height: calc(var(--vh, 1vh) * 100);
-  padding: 0 ${contentMargin}px;
   padding-bottom: 30px;
   margin-top: -72px;
+
+  @media screen and (${devices.tablet}) {
+    height: auto;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 100%;
+  }
 `
 const IllustrationSection = styled.div`
   height: 100%;
   width: calc(100% + ${contentMargin}px + ${contentMargin}px);
   margin-left: -${contentMargin}px;
   margin-right: -${contentMargin}px;
+  /* max-width: 536px; */
   padding-top: 60px;
   display: grid;
   grid-template-rows: 1fr;
@@ -115,16 +131,51 @@ const IllustrationSection = styled.div`
     grid-column: 1 / 2;
     grid-row: 1 / 2;
   }
+
+  @media screen and (${devices.tablet}) {
+    width: 100%;
+  }
+`
+const InputAndTagWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media screen and (${devices.tablet}) {
+    align-items: flex-start;
+    padding-right: 40px;
+    max-width: 400px;
+  }
+
+  > p {
+    display: none;
+    @media screen and (${devices.tablet}) {
+      display: block;
+    }
+  }
 `
 const TagLine = styled(motion.em)`
   font-size: 30px;
   font-weight: 100;
   margin-top: 20px;
   margin-bottom: 20px;
+  @media screen and (${devices.tablet}) {
+    font-size: 43px;
+  }
+`
+const LinkInputWrapper = styled.div`
+  width: 100%;
+  @media screen and (${devices.tablet}) {
+    font-size: 43px;
+  }
 `
 const StyledLink = styled(Link)`
   margin-top: 42px;
   padding: 20px;
+
+  @media screen and (${devices.tablet}) {
+    display: none;
+  }
 `
 const StyledIcon = styled(Icon)<{ flipalpha: number }>`
   transform: rotate(${({ flipalpha }) => flipalpha * 180}deg);

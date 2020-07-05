@@ -6,13 +6,7 @@ import Header from "./Header"
 import Body from "./Body"
 import { ThemeName, getTheme } from "../theme/theme"
 import { motion } from "framer-motion"
-import "styled-components/macro"
-
-declare module "react" {
-  interface HTMLAttributes<T> {
-    css?: any
-  }
-}
+import { devices } from "../theme/style"
 
 export const THEME_ANIM_DURATION = 0.5
 export const DEFAULT_THEME: ThemeName = "light"
@@ -36,12 +30,12 @@ function App() {
       }}
       transition={{ ease: "easeInOut", duration: THEME_ANIM_DURATION }}
     >
-      <Header theme={theme} toggleTheme={toggleTheme} />
-      <Grid>
+      <Content>
+        <Header theme={theme} toggleTheme={toggleTheme} />
         <Hero theme={theme} />
         <Body theme={theme} />
         <Footer theme={theme} />
-      </Grid>
+      </Content>
     </StyledApp>
   )
 }
@@ -49,18 +43,22 @@ function App() {
 const StyledApp = styled(motion.div)<{ bgColor: string; textColor: string }>`
   width: 100%;
   height: 100vh;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ textColor }) => textColor};
 `
-
-const Grid = styled.div`
+const Content = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto;
+  max-width: 1080px;
+  padding: 0 36px;
+  @media screen and (${devices.tablet}) {
+    grid-template-rows: auto auto auto auto;
+  }
 `
 
 export default App

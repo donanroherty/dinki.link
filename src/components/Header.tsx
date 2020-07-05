@@ -59,7 +59,7 @@ const StyledHeader = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 36px;
+  /* padding: 0 36px; */
   box-sizing: border-box;
   z-index: 10;
   > :nth-child(2) {

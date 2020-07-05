@@ -166,6 +166,7 @@ const Wrapper = styled.div`
   background-color: white;
   overflow: hidden;
   padding: 4px;
+  margin-top: 20px;
 `
 const Container = styled(motion.div)`
   position: relative;

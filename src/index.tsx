@@ -4,6 +4,12 @@ import "./index.css"
 import App from "./components/App"
 import * as serviceWorker from "./serviceWorker"
 
+declare module "react" {
+  interface HTMLAttributes<T> {
+    css?: any
+  }
+}
+
 if (
   navigator.platform.indexOf("Android") != -1 ||
   navigator.platform.indexOf("IPhone") != -1
