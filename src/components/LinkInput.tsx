@@ -159,13 +159,13 @@ const LinkInput = () => {
   )
 }
 const Wrapper = styled.div`
-  width: 100%;
   height: 45px;
   min-height: 45px;
   border-radius: 20px;
   background-color: white;
   overflow: hidden;
   padding: 4px;
+  margin-top: 20px;
 `
 const Container = styled(motion.div)`
   position: relative;
@@ -177,6 +177,7 @@ const Container = styled(motion.div)`
   overflow: hidden;
 `
 const Button = styled(motion.div)`
+  z-index: 12;
   height: 45px;
   background-color: #7db3ff;
   border-radius: 17px;
@@ -213,20 +214,20 @@ const InputWrapper = styled(motion.div)`
   width: calc(100% - 90px);
   min-width: 0;
   display: flex;
-  justify-content: center;
-  /* background-color: red; */
+  margin-left: 10px;
 `
-const StyledInput = styled.input`
+const StyledInput = styled(motion.input)`
   z-index: 10;
   height: 100%;
   min-width: 0;
+  width: 100%;
   height: 100%;
   font-size: 16px;
   border-style: none;
   color: #4f5257;
   background-color: transparent;
   outline: none;
-  margin-left: 10px;
+  position: relative;
 `
 
 export default LinkInput

@@ -3,6 +3,7 @@ import styled from "styled-components/macro"
 import Icon from "./Icon"
 import { motion } from "framer-motion"
 import { Theme } from "../theme/theme"
+import { devices } from "../theme/style"
 
 type Props = {
   theme: Theme
@@ -60,13 +61,16 @@ const MotionThemeWrapper = (props: {
 }) => <div onClick={props.onClick}>{props.render(props.themeDef)}</div>
 
 const StyledBody = styled.div`
-  /* color: #4f5257; */
-  padding: 0 36px;
   margin-bottom: 38px;
 
   > p {
     text-align: center;
     font-size: 16px;
+
+    display: block;
+    @media screen and (${devices.tablet}) {
+      display: none;
+    }
   }
 
   > div {
@@ -74,12 +78,19 @@ const StyledBody = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
     :first-child {
       padding-top: 0;
     }
     > * :not(:first-child) {
       margin-top: 37px;
+    }
+
+    @media screen and (${devices.tablet}) {
+      margin-top: 50px;
+      flex-direction: row;
+      justify-content: space-around;
     }
   }
 `

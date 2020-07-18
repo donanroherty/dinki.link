@@ -26,6 +26,7 @@ function Footer(props: Props) {
 const StyledFooter = styled.div<{ linkColor: string }>`
   height: 70px;
   font-size: 12px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

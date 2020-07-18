@@ -8,20 +8,19 @@ describe("<Icon/>", () => {
     expect(container.firstChild).toMatchSnapshot()
   })
   it("adds and icon to the document", () => {
-    const { getByTestId } = render(<Icon name="github" />)
-    expect(getByTestId(/icon/i)).not.toBeUndefined()
+    const { container } = render(<Icon name="github" />)
+    expect(container.firstElementChild).toBeDefined()
   })
 
   it("renders correct fill color", () => {
-    const { getByTestId } = render(<Icon name="github" color="green" />)
-    const svg = getByTestId(/icon/i)
+    const { container } = render(<Icon name="github" color="green" />)
+    const svg = container.firstElementChild as SVGSVGElement
     expect(svg.children[0].getAttribute("fill")).toBe("green")
   })
 
   it("renders correct size", () => {
-    const { getByTestId } = render(<Icon name="github" size={20} />)
-
-    const svg = getByTestId(/icon/i)
+    const { container } = render(<Icon name="github" size={20} />)
+    const svg = container.firstElementChild as SVGSVGElement
     expect(svg.getAttribute("width")).toBe("20")
     expect(svg.getAttribute("height")).toBe("20")
   })
