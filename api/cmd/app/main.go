@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	uuid "github.com/satori/go.uuid"
+	"dinki.link/util/randomid"
 )
 
 // Create REST api for POSTing and GETing links
@@ -43,11 +43,6 @@ func handlePostNew(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "body: %+v\n", l)
 
-	uuid, err := uuid.NewV4()
-	if err != nil {
-		fmt.Printf("Error: %s", err)
-	}
-
-	fmt.Fprintf(w, "uuid: %s", uuid)
-
+	id := randomid.New(4)
+	fmt.Fprintf(w, "id: %s\n", id)
 }
