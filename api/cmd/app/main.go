@@ -14,7 +14,7 @@ import (
 
 // Link is the data container for new link requests posted to the server
 type Link struct {
-	URL string
+	url string
 }
 
 func main() {
