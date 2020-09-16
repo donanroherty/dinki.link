@@ -26,7 +26,7 @@ type Link struct {
 }
 
 func main() {
-	http.HandleFunc("/new", handleNew)
+	http.HandleFunc("/api/new", handleNew)
 	http.ListenAndServe(":8080", nil)
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
