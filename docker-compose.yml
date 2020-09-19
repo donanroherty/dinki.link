@@ -2,10 +2,10 @@ version: '3.4'
 
 services:
   api:
-    container_name: dinkilink_app
+    container_name: dinkilink_api
     build:
       context: .
-      dockerfile: ./api/docker/app/Dockerfile
+      dockerfile: ./backend/docker/app/Dockerfile
     ports:
       - '8080:8080'
 
@@ -14,12 +14,12 @@ services:
     image: postgres
     restart: always
     env_file:
-      - ./api/docker/db/.env
+      - ./backend/docker/db/.env
     ports:
       - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./api/docker/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+      - ./backend/docker/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
 
 volumes:
   db-data:
