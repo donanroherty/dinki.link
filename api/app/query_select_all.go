@@ -19,7 +19,7 @@ func (app *App) SelectAll() ([]*Link, error) {
 	for rows.Next() {
 		var link Link
 
-		err := rows.Scan(&link.ID, &link.URL, &link.ShortLink, &link.Hits, &link.DateAdded)
+		err := rows.Scan(&link.ID, &link.URL, &link.ShortID, &link.Hits, &link.DateAdded)
 		if err != nil {
 			log.Fatal(err)
 		}
