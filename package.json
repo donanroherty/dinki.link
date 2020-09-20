@@ -17,7 +17,7 @@
     "api:clean": "docker-compose down -v --remove-orphans",
     "api:exec": "docker exec -it dinkilink_db bin/bash",
     "api:build": "docker-compose build",
-    "api:run": "cd ./api/cmd/app && go run main.go",
+    "api:run": "cd ./backend/cmd/app && go run main.go",
     "api:refresh": "yarn api:clean && yarn api:up"
   }
 }

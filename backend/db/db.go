@@ -9,7 +9,7 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "api"
-	password = "root_password"
+	password = "password"
 	dbname   = "dinkilink"
 )
 
@@ -29,7 +29,6 @@ func New() *sql.DB {
 		fmt.Printf("Error opening postgres connection: %s\n", err)
 		panic(err)
 	}
-	defer db.Close()
 
 	err = db.Ping()
 	if err != nil {
