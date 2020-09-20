@@ -3,10 +3,11 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 const (
-	host     = "localhost"
+	host     = "dinkilink_db"
 	port     = 5432
 	user     = "api"
 	password = "password"
@@ -27,11 +28,12 @@ func New() *sql.DB {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		fmt.Printf("Error opening postgres connection: %s\n", err)
-		panic(err)
+		// panic(err)
 	}
 
 	err = db.Ping()
 	if err != nil {
+		log.Println("Pinging database...")
 		panic(err)
 	}
 

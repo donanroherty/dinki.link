@@ -10,8 +10,8 @@ RUN go mod download
 
 COPY ./api .
 
-# RUN go build -ldflags '-w -s' -a -o ./bin/app ./cmd/app
-RUN go build -gcflags="all=-N -l" -o ./bin/app ./cmd/app
+RUN go build -ldflags '-w -s' -a -o ./bin/app ./cmd/app
+# RUN go build -gcflags="all=-N -l" -o ./bin/app ./cmd/app
 
 FROM alpine
 RUN apk update && apk add --no-cache bash
@@ -21,5 +21,5 @@ COPY --from=build-env /go/bin/dlv /
 
 EXPOSE 8080 40000
 
-# CMD ["/dinkilink/app"]
-CMD ["/dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/dinkilink/app"]
+CMD ["/dinkilink/app"]
+# CMD ["/dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/dinkilink/app"]

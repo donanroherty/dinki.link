@@ -30,6 +30,7 @@ func (app *App) GetDB() *sql.DB {
 	if app == nil {
 		app.db = db.New()
 	}
+	app.db.Ping()
 
 	return app.db
 }

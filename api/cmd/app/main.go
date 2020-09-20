@@ -1,17 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"dinki.link/app"
 	"dinki.link/db"
 	"dinki.link/server"
-
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	fmt.Println("Initializing api...")
+	log.Println("Initializing api...")
 
 	db := db.New()
 
