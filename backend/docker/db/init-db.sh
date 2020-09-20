@@ -6,7 +6,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     WITH PASSWORD '$POSTGRES_API_PASSWORD';
     
     CREATE TABLE links (
-        id BIGSERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY UNIQUE,
         url TEXT NOT NULL,
         short_link TEXT NOT NULL,
         hits INT,

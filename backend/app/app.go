@@ -8,10 +8,10 @@ import (
 
 // Link represents a row in the links table
 type Link struct {
-	ID        uint8
+	ID        int
 	URL       string
 	ShortLink string
-	Hits      uint8
+	Hits      int
 	DateAdded string
 }
 

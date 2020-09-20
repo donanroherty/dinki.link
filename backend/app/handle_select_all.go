@@ -1,7 +1,9 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -15,10 +17,10 @@ func (app *App) HandleSelect(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 
-		for _, link := range links {
-			fmt.Printf("%+v\n", *link)
-			fmt.Fprintf(w, "%+v\n", *link)
+		err = json.NewEncoder(w).Encode(links)
+		if err != nil {
+			log.Println(err)
+			fmt.Fprintf(w, "%d - %s:\n%s", http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError), err)
 		}
-
 	}
 }

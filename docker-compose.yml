@@ -2,12 +2,12 @@ version: '3.4'
 
 services:
   # api:
-  #   container_name: dinkilink_api
-  #   build:
-  #     context: .
-  #     dockerfile: ./backend/docker/app/Dockerfile
-  #   ports:
-  #     - '8080:8080'
+  # container_name: dinkilink_api
+  # build:
+  #   context: .
+  #   dockerfile: ./backend/docker/app/Dockerfile
+  # ports:
+  #   - '8080:8080'
 
   db:
     container_name: dinkilink_db

@@ -1,43 +1,35 @@
 package app
 
 import (
-	"database/sql"
 	"log"
 )
 
 // SelectAll returns all rows from the links table
 func (app *App) SelectAll() ([]*Link, error) {
-	db := app.GetDB()
-
-	err := db.Ping()
-	if err != nil {
-		log.Printf("%s\n", err)
-		return nil, err
-	}
-
-	var rows *sql.Rows
-	rows, err = app.db.Query("SELECT * FROM links")
+	rows, err := app.db.Query("SELECT * FROM links")
 	if err != nil {
 		log.Printf("SelectAll() error: %s\n", err)
 		return nil, err
 	}
 
-	var links []*Link
+	defer rows.Close()
+
+	links := make([]*Link, 0)
 
 	for rows.Next() {
-		var id int
-		var url string
-		var shortLink string
-		var hits uint8
-		var dateAdded string
+		var link Link
 
-		err := rows.Scan(&id, &url, &shortLink, &hits, &dateAdded)
+		err := rows.Scan(&link.ID, &link.URL, &link.ShortLink, &link.Hits, &link.DateAdded)
 		if err != nil {
-			log.Printf("Error: %s\n", err)
+			log.Fatal(err)
 		}
 
-		// fmt.Println(id, url, shortID, hits, dateAdded)
-		links = append(links, &Link{ID: uint8(id), URL: url, ShortLink: shortLink, Hits: hits, DateAdded: dateAdded})
+		links = append(links, &link)
+	}
+
+	rerr := rows.Close()
+	if rerr != nil {
+		log.Println(rerr)
 	}
 
 	err = rows.Err()
