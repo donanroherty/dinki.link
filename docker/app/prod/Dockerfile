@@ -3,8 +3,6 @@ WORKDIR /dinkilink
 
 RUN apk update && apk add --no-cache gcc musl-dev git bash
 
-RUN go get github.com/go-delve/delve/cmd/dlv
-
 COPY ./api/go.mod ./api/go.sum ./
 RUN go mod download
 
@@ -16,7 +14,6 @@ FROM alpine
 RUN apk update && apk add --no-cache bash
 
 COPY --from=build-env /dinkilink/bin/app /dinkilink/app
-COPY --from=build-env /go/bin/dlv /
 
 EXPOSE 8080
 
