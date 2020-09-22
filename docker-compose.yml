@@ -5,13 +5,15 @@ services:
     container_name: dinkilink_api
     build:
       context: .
-      dockerfile: ./api/docker/app/Dockerfile
+      dockerfile: ./api/docker/app/dev/Dockerfile
     ports:
       - '8080:8080'
       - '40000:40000'
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./api:/dinkilink/src
 
   db:
     container_name: dinkilink_db

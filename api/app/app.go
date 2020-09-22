@@ -10,7 +10,7 @@ import (
 type Link struct {
 	ID        int
 	URL       string
-	ShortLink string
+	ShortID   string
 	Hits      int
 	DateAdded string
 }
