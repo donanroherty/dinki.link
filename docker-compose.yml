@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  api:
+    container_name: dinkilink_api
+    build:
+      context: .
+      dockerfile: ./docker/app/dev/Dockerfile
+    ports:
+      - '8080:8080'
+      - '40000:40000'
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./api:/dinkilink/src
+
+  db:
+    container_name: dinkilink_db
+    image: postgres
+    restart: always
+    env_file:
+      - ./docker/db/.env
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./docker/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dinkilink']
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db-data:
