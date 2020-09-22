@@ -61,9 +61,6 @@ func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
 		if hasRow {
 			lRes = LinkResponse{ShortID: l.ShortID}
 		} else {
-
-			// q := fmt.Sprintf("insert into links (url, short_id, hits, date_added) values('https://example.com/sociis.aspx', 'UUULz3lZx', 3222, '2020-06-21')")
-
 			date := time.Now().Format("2006-01-02 15:04:05")
 			link := Link{URL: lReq.URL, ShortID: newShortID, Hits: 0, DateAdded: date}
 
@@ -78,7 +75,6 @@ func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-
 			lRes = LinkResponse{ShortID: newShortID}
 		}
 
@@ -89,7 +85,5 @@ func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
-		log.Println("HandleNew complete")
 	}
 }
