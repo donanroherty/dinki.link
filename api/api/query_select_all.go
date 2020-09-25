@@ -1,12 +1,12 @@
-package app
+package api
 
 import (
 	"log"
 )
 
 // SelectAll returns all rows from the links table
-func (app *App) SelectAll() ([]*Link, error) {
-	rows, err := app.db.Query("SELECT * FROM links")
+func (api *API) SelectAll() ([]*Link, error) {
+	rows, err := api.db.Query("SELECT * FROM links")
 	if err != nil {
 		log.Printf("SelectAll() error: %s\n", err)
 		return nil, err

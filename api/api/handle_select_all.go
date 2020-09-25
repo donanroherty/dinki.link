@@ -1,4 +1,4 @@
-package app
+package api
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 )
 
 // HandleSelect handles GET requests and responds with rows in the links table
-func (app *App) HandleSelect(w http.ResponseWriter, r *http.Request) {
+func (api *API) HandleSelect(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		links, err := app.SelectAll()
+		links, err := api.SelectAll()
 
 		if err != nil {
 			fmt.Fprintf(w, "%d - %s:\n%s", http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError), err)
