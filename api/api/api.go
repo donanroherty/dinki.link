@@ -1,4 +1,4 @@
-package app
+package api
 
 import (
 	"database/sql"
@@ -15,22 +15,22 @@ type Link struct {
 	DateAdded string
 }
 
-// App wraps the primary components of the applicaiton
-type App struct {
+// API wraps the primary components of the applicaiton
+type API struct {
 	db *sql.DB
 }
 
 // New creates and returns a new app object
-func New(db *sql.DB) *App {
-	return &App{db: db}
+func New(db *sql.DB) *API {
+	return &API{db: db}
 }
 
 // GetDB gets the DB
-func (app *App) GetDB() *sql.DB {
-	if app == nil {
-		app.db = db.New()
+func (api *API) GetDB() *sql.DB {
+	if api == nil {
+		api.db = db.New()
 	}
-	app.db.Ping()
+	api.db.Ping()
 
-	return app.db
+	return api.db
 }

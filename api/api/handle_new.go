@@ -1,4 +1,4 @@
-package app
+package api
 
 import (
 	"database/sql"
@@ -22,7 +22,7 @@ type LinkResponse struct {
 }
 
 //HandleNew is a test handler.  Responds with mock json for new random id
-func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
+func (api *API) HandleNew(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var lReq LinkRequest
 
@@ -37,7 +37,7 @@ func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
 		newShortID := randomid.New(4)
 
 		qry := fmt.Sprintf("SELECT * FROM links WHERE short_id = '%s'", newShortID)
-		rows := app.db.QueryRow(qry)
+		rows := api.db.QueryRow(qry)
 
 		hasRow := true
 
@@ -67,7 +67,7 @@ func (app *App) HandleNew(w http.ResponseWriter, r *http.Request) {
 			qry := fmt.Sprintf("INSERT INTO LINKS (url, short_id, hits, date_added) values ('%s', '%s', %d, TIMESTAMP '%s')",
 				link.URL, link.ShortID, link.Hits, link.DateAdded)
 
-			_, err := app.db.Exec(qry)
+			_, err := api.db.Exec(qry)
 
 			if err != nil {
 				log.Println(err)

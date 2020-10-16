@@ -3,18 +3,18 @@ package main
 import (
 	"log"
 
-	"dinki.link/app"
+	"dinki.link/api"
 	"dinki.link/db"
 	"dinki.link/server"
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	log.Println("Initializing api...")
+	log.Println("Server listening on :8080")
 
 	db := db.New()
 
-	app := app.New(db)
+	api := api.New(db)
 
-	server.New(app)
+	server.New(api)
 }
