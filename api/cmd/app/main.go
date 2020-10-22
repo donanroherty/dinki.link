@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"dinki.link/fileserver"
+
 	"dinki.link/api"
 	"dinki.link/db"
 	"dinki.link/server"
@@ -17,4 +19,9 @@ func main() {
 	api := api.New(db)
 
 	server.New(api)
+
+	fileserver.New("/static")
+
+	for true {
+	}
 }

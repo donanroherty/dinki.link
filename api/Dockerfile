@@ -11,7 +11,7 @@ RUN go mod download
 RUN go get github.com/go-delve/delve/cmd/dlv
 RUN go get github.com/githubnemo/CompileDaemon
 
-EXPOSE 8080 40000
+EXPOSE 8080 40000 80
 
 # RUN go build -ldflags '-w -s' -a -o ../bin ./cmd/app
 
