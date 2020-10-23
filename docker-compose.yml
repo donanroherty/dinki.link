@@ -15,30 +15,16 @@ services:
   #     - CHOKIDAR_USEPOLLING=true
   #   stdin_open: true
 
-  # app:
-  #   container_name: dinkilink_app
-  #   build:
-  #     context: ./app
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - NGINX_HOST=dinki.link
-  #     - NGINX_PORT=80
-  #   ports:
-  #     - "80:80"
-
   api:
     container_name: dinkilink_api
     build:
-      context: ./api
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
-      - "40000:40000"
-      - "8000:80"
+      - "888:80"
     depends_on:
       - db
-    volumes:
-      - ./api:/dinkilink/app/src
     env_file:
       - ./db/.env
 
