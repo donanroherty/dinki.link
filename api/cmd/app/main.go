@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"dinki.link/fileserver"
 
 	"dinki.link/api"
 	"dinki.link/db"
@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-	log.Println("Server listening on :8080")
-
 	db := db.New()
 
 	api := api.New(db)
 
 	server.New(api)
+
+	fileserver.New("/static")
 }

@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"log"
+	"time"
 )
 
 const (
@@ -28,16 +28,32 @@ func New() *sql.DB {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		fmt.Printf("Error opening postgres connection: %s\n", err)
-		// panic(err)
 	}
 
-	err = db.Ping()
-	if err != nil {
-		log.Println("Pinging database...")
-		panic(err)
+	ticker := time.NewTicker(100 * time.Millisecond)
+	defer ticker.Stop()
+
+	attempt := 1
+
+	for {
+		connected := false
+		select {
+		case <-ticker.C:
+			err := db.Ping()
+			if err != nil {
+				fmt.Printf("DB ping attempt %d failed: %s\n", attempt, err)
+				attempt++
+			} else {
+				connected = true
+			}
+		}
+
+		if connected {
+			break
+		}
 	}
 
-	fmt.Println("Connected to database")
+	fmt.Printf("Connected to database '%s'\n", dbname)
 
 	return db
 }

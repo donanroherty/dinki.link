@@ -8,6 +8,10 @@ import (
 	"dinki.link/api"
 )
 
+const (
+	port = 8080
+)
+
 // New creates and launches a new http server
 func New(api *api.API) *http.Server {
 	http.HandleFunc("/api/select", api.HandleSelect)
@@ -15,13 +19,15 @@ func New(api *api.API) *http.Server {
 
 	fmt.Println("Launching http server...")
 
-	server := &http.Server{Addr: ":8080", Handler: nil}
+	server := &http.Server{Addr: fmt.Sprint(":", port), Handler: nil}
 
-	// go func() {
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("ListenAndServe(): %v", err)
-	}
-	// }()
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("ListenAndServe(): %v", err)
+		}
+	}()
+
+	log.Println("Server listening on :", port)
 
 	return server
 }
