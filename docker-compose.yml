@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.5"
 
 services:
   # app:
@@ -23,6 +23,7 @@ services:
     ports:
       - "8080:8080"
       - "888:80"
+      - "40000:40000"
     depends_on:
       - db
     env_file:
