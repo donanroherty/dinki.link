@@ -5,13 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch API",
+      "name": "Launch",
       "type": "go",
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/api/cmd/app",
-      "env": {},
-      "args": []
+      "env": {} ,
+      "envFile": "${workspaceFolder}/db/.env",
+      "args": ["-dbhost", "localhost"]
     },
     {
       "name": "Attach to API",
