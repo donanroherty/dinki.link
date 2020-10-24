@@ -6,13 +6,11 @@
   "author": "Ronan Doherty <donanroherty@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "app"
-  ],
   "scripts": {
-    "app:build": "cd app && docker build -t dinkilink_app:dev .",
-    "app:run": "cd app && docker run -it --rm -v ${PWD}:/dinkilink/app -v /app/none_modules -p 3100:3000 -e CHOKIDAR_USEPOLLING=true dinkilink_app:dev",
-    "app:up": "cd app && yarn app:build && yarn app:run",
+    "network:run":"docker network create dinkilink_default",
+    "app:run": "cd app && docker build -f ./Dockerfile.dev --no-cache -t dinkilink_app:dev . && docker run -it --rm --network dinkilink_default -v ${PWD}:/app -v /node_modules -p 3100:3000 -e CHOKIDAR_USEPOLLING=true dinkilink_app:dev",
+    "server:run":"cd api && docker build -f ./Dockerfile.dev -t dinkilink_api:dev . && docker run -it --rm --network dinkilink_default -v ${PWD}:/api -p 8080:8080 -p 40000:40000 --env-file=../db/.env dinkilink_api:dev",
+    "db:run": "docker run -it --rm --network dinkilink_default --name dinkilink_db --net-alias dinkilink_db -v db-data:/var/lib/postgresql/data -v ${PWD}/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro -p 5432:5432 --env-file=./db/.env postgres:13",
     "api:up": "docker-compose up",
     "api:down": "docker-compose down",
     "api:clean": "docker-compose down -v --remove-orphans",
