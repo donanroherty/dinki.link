@@ -12,7 +12,7 @@
       "program": "${workspaceFolder}/api/cmd/app",
       "env": {} ,
       "envFile": "${workspaceFolder}/db/.env",
-      "args": ["-dbhost", "localhost"]
+      "args": ["-dbhost", "localhost", "-webpath", "${workspaceFolder}/api/static"]
     },
     {
       "name": "Attach to API",

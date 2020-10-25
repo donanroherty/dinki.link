@@ -7,18 +7,16 @@ import (
 )
 
 const (
-	host     = "dinkilink_db"
-	port     = 5432
 	user     = "api"
 	password = "password"
 	dbname   = "dinkilink"
 )
 
 // New creates and returns a new database connection
-func New() *sql.DB {
+func New(dbHost string, dbPort int) *sql.DB {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable\n",
-		host, port, user, password, dbname)
+		dbHost, dbPort, user, password, dbname)
 
 	fmt.Println("Opening db connection...")
 	fmt.Printf("%s", psqlInfo)
