@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dinki.link/fileserver"
+	"flag"
 
 	"dinki.link/api"
 	"dinki.link/db"
@@ -10,11 +10,14 @@ import (
 )
 
 func main() {
-	db := db.New()
+	dbHost := flag.String("dbhost", "dinkilink_db", "DB hostname")
+	dbPort := flag.Int("dbport", 5432, "DB port")
+	webPath := flag.String("webpath", "/srv/www/dinkilink/", "Path to directory containing static website files")
+	flag.Parse()
+
+	db := db.New(*dbHost, *dbPort)
 
 	api := api.New(db)
 
-	server.New(api)
-
-	fileserver.New("/static")
+	server.New(*webPath, api)
 }
