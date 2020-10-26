@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import styled from "styled-components/macro"
 import { motion, Variant, Spring } from "framer-motion"
 import BusyIndicator from "./BusyIndicator"
 import Icon from "./Icon"
+import Axios from "axios"
 
 type AnimVariants = {
   initial: Variant
@@ -59,29 +60,61 @@ const spring: Spring = {
   stiffness: 100,
 }
 
+const DEV = !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+
 const LinkInput = () => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const [animState, setAnimState] = useState<keyof AnimVariants>("initial")
 
-  const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {}
+  const [inputValue, setInputValue] = useState("ronandoherty.com")
+  const [outputDinkiLink, setOutputDinkiLink] = useState("")
+
+  const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
 
   const convert = async () => {
     setAnimState("busy")
-
-    await new Promise((r) => setTimeout(r, 1000))
+    await new Promise(r => setTimeout(r, 1000))
     setAnimState("preResult")
+    await new Promise(r => setTimeout(r, 500))
+    setAnimState("result")
 
-    await new Promise((r) => setTimeout(r, 500))
+    const url = DEV ? "http://localhost/api/new" : "/api/new"
+
+    const res = await Axios({
+      method: "POST",
+      url: url,
+      data: {
+        URL: inputValue,
+      },
+    })
+
+    const host = `${DEV ? "localhost" : "dinki.link"}`
+
+    if (res.data.ShortID !== undefined) {
+      setOutputDinkiLink(`${host}/${res.data.ShortID}`)
+    }
+
     setAnimState("result")
   }
 
   const reset = async () => {
     setAnimState("reset")
 
-    await new Promise((r) => setTimeout(r, 1000))
+    await new Promise(r => setTimeout(r, 1000))
     setAnimState("initial")
   }
 
-  const copy = () => {}
+  const copy = () => {
+    const inputEl = inputRef.current as HTMLInputElement
+
+    if (inputRef.current) {
+      inputEl.select()
+      navigator.clipboard.writeText(inputEl.value)
+    }
+  }
 
   const immediate = { duration: 0.01 }
 
@@ -109,18 +142,20 @@ const LinkInput = () => {
           variants={inputVars}
         >
           <StyledInput
+            ref={inputRef}
             type="text"
             name="Link Output"
             id="link-input"
             onChange={handleLinkInput}
+            // value={inputValue}
             value={
               animState === "result" || animState === "reset"
-                ? `dinki.link/your-link`
-                : `https:://google.com/your-link`
+                ? outputDinkiLink
+                : inputValue
             }
-            readOnly
+            // readOnly
             autoFocus={true}
-            onFocus={(e) => e.target.select()}
+            onFocus={e => e.target.select()}
           />
         </InputWrapper>
 
