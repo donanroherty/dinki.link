@@ -1,0 +1,1 @@
+console.log("Static.js loaded")
