@@ -1,25 +1,9 @@
 version: "3.5"
 
 services:
-  # app:
-  #   container_name: dinkilink_app
-  #   build:
-  #     context: ./app
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '3100:3000'
-  #   volumes:
-  #     - ./app:/dinkilink/app
-  #     - /dinkilink/app/node_modules
-  #   environment:
-  #     - CHOKIDAR_USEPOLLING=true
-  #   stdin_open: true
-
   api:
     container_name: dinkilink_api
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
+    image: donan/dinkilink_api:latest
     ports:
       - "80:80"
       - "888:80"
