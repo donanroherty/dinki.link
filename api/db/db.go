@@ -3,17 +3,16 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"time"
-)
-
-const (
-	user     = "api"
-	password = "password"
-	dbname   = "dinkilink"
 )
 
 // New creates and returns a new database connection
 func New(dbHost string, dbPort int) *sql.DB {
+	user := os.Getenv("POSTGRES_API_USER")
+	password := os.Getenv("POSTGRES_API_PASSWORD")
+	dbname := os.Getenv("POSTGRES_DB")
+
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable\n",
 		dbHost, dbPort, user, password, dbname)
