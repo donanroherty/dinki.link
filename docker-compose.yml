@@ -4,6 +4,7 @@ services:
   api:
     container_name: dinkilink_api
     image: donan/dinkilink_api:latest
+    restart: always
     ports:
       - "80:80"
       - "888:80"
