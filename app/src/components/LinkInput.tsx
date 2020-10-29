@@ -75,6 +75,12 @@ const LinkInput = () => {
   }
 
   const convert = async () => {
+    const isUrl = inputValue.match(
+      /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+    )
+
+    if (!isUrl) return
+
     setAnimState("busy")
     await new Promise(r => setTimeout(r, 1000))
     setAnimState("preResult")
