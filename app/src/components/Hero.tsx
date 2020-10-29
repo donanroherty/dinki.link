@@ -73,8 +73,8 @@ function Hero(props: Props) {
         <InputAndTagWrapper>
           <TagLine>Make your linky dinki</TagLine>
           <motion.p>
-            DinkyLink is a simple and free URL shortener built with React, Go
-            and lots of coffee.
+            DinkyLink is a URL shortener built with React, Go, Docker and lots
+            of coffee.
           </motion.p>
           <LinkInputWrapper>
             <LinkInput />

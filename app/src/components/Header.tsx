@@ -25,7 +25,6 @@ function Header(props: Props) {
         <Brand color={theme.brandColor}>
           Dinki Link <sup>v1.0.0-alpha</sup>
         </Brand>
-        {/* <Version>aplha</Version> */}
       </div>
 
       <IconWrapper role="button" title="github repo" onClick={navigateToRepo}>
@@ -64,7 +63,6 @@ const StyledHeader = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  /* padding: 0 36px; */
   box-sizing: border-box;
   z-index: 10;
   > :nth-child(2) {

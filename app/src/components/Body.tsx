@@ -14,39 +14,40 @@ function Body(props: Props) {
 
   return (
     <StyledBody>
-      <motion.p>
-        DinkyLink is a simple and free URL shortener built with React, Go and
-        lots of coffee.
-      </motion.p>
       <div>
         <Card>
           <MotionThemeWrapper
             themeDef={theme}
-            render={(themeDef) => (
+            render={themeDef => (
               <Icon name="github" color={themeDef.textColor} size={65} />
             )}
           />
           <h3>Open Source</h3>
+          <p>Wanna see the code? Check the link in the header!</p>
         </Card>
 
         <Card>
           <MotionThemeWrapper
             themeDef={theme}
-            render={(themeDef) => (
+            render={themeDef => (
               <Icon name="test" color={themeDef.textColor} size={65} />
             )}
           />
-          <h3>Fully Tested</h3>
+          <h3>Tested</h3>
+          <p>Well the frontend is, I'm still working on the backend.</p>
         </Card>
 
         <Card>
           <MotionThemeWrapper
             themeDef={theme}
-            render={(themeDef) => (
+            render={themeDef => (
               <Icon name="engineer" color={themeDef.textColor} size={65} />
             )}
           />
           <h3 style={{ color: theme.textColor }}>Over Engineered</h3>
+          <p>
+            I built this site to improve my Go, Docker and deployment skills.
+          </p>
         </Card>
       </div>
     </StyledBody>
@@ -104,8 +105,13 @@ const Card = styled(motion.div)`
 
   > h3 {
     font-size: 16px;
-    margin-top: 29;
+    margin-bottom: 0px;
     font-weight: 900;
+  }
+
+  > p {
+    width: 250px;
+    text-align: center;
   }
 `
 

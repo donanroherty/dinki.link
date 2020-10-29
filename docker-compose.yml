@@ -7,8 +7,6 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "888:80"
-      - "40000:40000"
     depends_on:
       - db
     env_file:
