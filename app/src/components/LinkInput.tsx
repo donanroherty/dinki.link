@@ -67,7 +67,7 @@ const LinkInput = () => {
 
   const [animState, setAnimState] = useState<keyof AnimVariants>("initial")
 
-  const [inputValue, setInputValue] = useState("ronandoherty.com")
+  const [inputValue, setInputValue] = useState("")
   const [outputDinkiLink, setOutputDinkiLink] = useState("")
 
   const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +112,9 @@ const LinkInput = () => {
 
     if (inputRef.current) {
       inputEl.select()
-      navigator.clipboard.writeText(inputEl.value)
+      document.execCommand("copy")
+      // TODO: When using https, use clipboard.writeText
+      // navigator.clipboard.writeText(inputEl.value)
     }
   }
 
@@ -148,12 +150,14 @@ const LinkInput = () => {
             id="link-input"
             onChange={handleLinkInput}
             // value={inputValue}
+            // placeholder={"feed me links (￣﹃￣)"}
+            placeholder={"enter a link..."}
             value={
               animState === "result" || animState === "reset"
                 ? outputDinkiLink
                 : inputValue
             }
-            // readOnly
+            readOnly={animState === "result" || animState === "reset"}
             autoFocus={true}
             onFocus={e => e.target.select()}
           />

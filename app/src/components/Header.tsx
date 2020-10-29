@@ -21,12 +21,17 @@ function Header(props: Props) {
 
   return (
     <StyledHeader>
-      <Brand color={theme.brandColor}>Dinki Link</Brand>
+      <div>
+        <Brand color={theme.brandColor}>
+          Dinki Link <sup>v1.0.0-alpha</sup>
+        </Brand>
+        {/* <Version>aplha</Version> */}
+      </div>
 
       <IconWrapper role="button" title="github repo" onClick={navigateToRepo}>
         <MotionThemeWrapper
           theme={theme}
-          render={(themeDef) => (
+          render={themeDef => (
             <Icon name="github" color={themeDef.textColor} size={22} />
           )}
         />
@@ -35,7 +40,7 @@ function Header(props: Props) {
       <IconWrapper role="button" title="toggle theme" onClick={toggleTheme}>
         <MotionThemeWrapper
           theme={theme}
-          render={(themeDef) => (
+          render={themeDef => (
             <Icon name="daynight" color={themeDef.textColor} size={24} />
           )}
         />
@@ -67,11 +72,15 @@ const StyledHeader = styled.div`
     margin-right: 20px;
   }
 `
-const Brand = styled.div<{ color: string }>`
+const Brand = styled.span<{ color: string }>`
   font-size: 27px;
   color: ${({ color }) => color};
   font-weight: 900;
+  > sup {
+    font-size: 10px;
+  }
 `
+
 const IconWrapper = styled.button`
   width: 28px;
   height: 28px;

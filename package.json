@@ -1,22 +1,16 @@
 {
   "name": "dinkilink",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "main": "index.js",
   "repository": "https://github.com/donanroherty/dinki.link.git",
   "author": "Ronan Doherty <donanroherty@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "network:run": "docker network create dinkilink_default",
     "app:run": "cd app && docker build -f ./Dockerfile.dev --no-cache -t dinkilink_app:dev . && docker run -it --rm --network dinkilink_default -v ${PWD}:/app -v /node_modules -p 3100:3000 -e CHOKIDAR_USEPOLLING=true dinkilink_app:dev",
-    "server:run": "cd api && docker build -f ./Dockerfile.dev -t dinkilink_server:dev . && docker run -it --rm --network dinkilink_default -v ${PWD}:/api -p 8080:8080 -p 40000:40000 --env-file=../db/.env dinkilink_server:dev",
+    "api:run": "cd api && docker build -f ./Dockerfile.dev -t dinkilink_api . && docker run -it --rm --network dinkilink_default -v ${PWD}:/api -p 8080:8080 -p 40000:40000 --env-file=../db/.env dinkilink_server:dev",
     "db:run": "docker run -it --rm --network dinkilink_default --name dinkilink_db --net-alias dinkilink_db -v db-data:/var/lib/postgresql/data -v ${PWD}/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro -p 5432:5432 --env-file=./db/.env postgres:13",
     "api:build": "docker build -f ./Dockerfile -t donan/dinkilink_api .",
-    "api:push":"docker push donan/dinkilink_api",
-    "api:clean": "docker-compose down -v --remove-orphans",
-    "api:run": "cd ./api/cmd/app && go run main.go",
-    "api:refresh": "yarn api:clean && docker-compose build && yarn docker-compose up",
-    "api:exec": "docker exec -it dinkilink_api bin/bash",
-    "db:exec": "docker exec -it dinkilink_db bin/bash"
+    "api:clean": "docker-compose down -v --remove-orphans"
   }
 }
