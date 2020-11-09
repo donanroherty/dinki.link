@@ -5,15 +5,27 @@ services:
     container_name: dinkilink_api
     image: donan/dinkilink_api:latest
     restart: always
-    # ports:
-      # - "80:80"
     depends_on:
       - db
     env_file:
       - ./db/.env
     networks:
-      - dinkilink
-      - reverseproxy
+      - default
+      - web
+    expose:
+      - "9000"
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.protocol=http"
+      - "traefik.http.routers.dinkilink.rule=Host(`dinki.link`)"
+      - "traefik.http.routers.dinkilink.entrypoints=web"
+      - "traefik.http.routers.dinkilink.entrypoints=websecure"
+      - "traefik.http.routers.dinkilink.tls.certresolver=dinkilinkhttpchallenge"
+      - "traefik.http.routers.wwwdinkilink.rule=Host(`www.dinki.link`)"
+      - "traefik.http.routers.wwwdinkilink.entrypoints=web"
+      - "traefik.http.routers.wwwdinkilink.entrypoints=websecure"
+      - "traefik.http.routers.wwwdinkilink.tls.certresolver=dinkilinkhttpchallenge"
 
   db:
     container_name: dinkilink_db
@@ -27,13 +39,11 @@ services:
       - db-data:/var/lib/postgresql/data
       - ./db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
     networks:
-      - dinkilink
+      - default
 
 volumes:
   db-data:
 
 networks:
-  dinkilink:
-  reverseproxy:
-    external:
-      name: reverseproxy
+  web:
+    external: true

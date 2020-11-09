@@ -7,8 +7,11 @@ DinkiLink is a URL shortener built with React, Go, PostgreSQL and Docker.  It is
 ## Deployment
 
 ### Network
-For deployment I use an NGINX reverse proxy to redirect traffic.  
-The reverseproxy network references can removed docker-compose.yml if not needed.
+For deployment I use an Traefix reverse proxy to redirect traffic and setup https.  Create the *web* network to build, or remove references to *web* from docker-compose.yml.
+```
+docker create network web
+```
+
 
 
 ### Environment vars
