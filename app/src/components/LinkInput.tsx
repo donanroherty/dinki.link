@@ -82,9 +82,9 @@ const LinkInput = () => {
     if (!isUrl) return
 
     setAnimState("busy")
-    await new Promise(r => setTimeout(r, 1000))
+    await new Promise((r) => setTimeout(r, 1000))
     setAnimState("preResult")
-    await new Promise(r => setTimeout(r, 500))
+    await new Promise((r) => setTimeout(r, 500))
     setAnimState("result")
 
     const url = DEV ? "http://localhost/api/new" : "/api/new"
@@ -109,7 +109,7 @@ const LinkInput = () => {
   const reset = async () => {
     setAnimState("reset")
 
-    await new Promise(r => setTimeout(r, 1000))
+    await new Promise((r) => setTimeout(r, 1000))
     setAnimState("initial")
   }
 
@@ -118,9 +118,7 @@ const LinkInput = () => {
 
     if (inputRef.current) {
       inputEl.select()
-      document.execCommand("copy")
-      // TODO: When using https, use clipboard.writeText
-      // navigator.clipboard.writeText(inputEl.value)
+      navigator.clipboard.writeText(inputEl.value)
     }
   }
 
@@ -158,14 +156,10 @@ const LinkInput = () => {
             // value={inputValue}
             // placeholder={"feed me links (￣﹃￣)"}
             placeholder={"enter a link..."}
-            value={
-              animState === "result" || animState === "reset"
-                ? outputDinkiLink
-                : inputValue
-            }
+            value={animState === "result" || animState === "reset" ? outputDinkiLink : inputValue}
             readOnly={animState === "result" || animState === "reset"}
             autoFocus={true}
-            onFocus={e => e.target.select()}
+            onFocus={(e) => e.target.select()}
           />
         </InputWrapper>
 
@@ -181,14 +175,9 @@ const LinkInput = () => {
               : undefined
           }
         >
-          <div style={{ position: "absolute" }}>
-            {animState === "result" ? "Copy" : "Convert"}
-          </div>
+          <div style={{ position: "absolute" }}>{animState === "result" ? "Copy" : "Convert"}</div>
 
-          <Circle
-            transition={{ ...spring, delay: 0.5 }}
-            variants={circleVars}
-          />
+          <Circle transition={{ ...spring, delay: 0.5 }} variants={circleVars} />
         </ConvertButton>
 
         <motion.div

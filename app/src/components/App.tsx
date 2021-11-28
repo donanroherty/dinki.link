@@ -1,9 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled, { createGlobalStyle } from "styled-components/macro"
 import Hero from "./Hero"
 import Footer from "./Footer"
 import Header from "./Header"
-import Body from "./Body"
 import { ThemeName, getTheme } from "../theme/theme"
 import { motion } from "framer-motion"
 import { devices } from "../theme/style"
@@ -20,45 +19,37 @@ function App() {
 
   const theme = getTheme(themeName)
 
-  // useEvent("resize", () => {
-  //   document.documentElement.style.setProperty(
-  //     "--vh",
-  //     `${window.innerHeight * 0.01}px`
-  //   )
-  // })
+  useEffect(() => {
+    document.body.style.backgroundColor = theme.backgroundColor
+  }, [theme])
 
   return (
-    <StyledApp
-      bgColor={getTheme(themeName).backgroundColor}
-      textColor={getTheme(themeName).textColor}
-      animate={{
-        color: theme.textColor,
-        backgroundColor: theme.backgroundColor,
-      }}
-      transition={{ ease: "easeInOut", duration: THEME_ANIM_DURATION }}
-    >
-      <GlobalStyle />
+    <StyledApp textColor={getTheme(themeName).textColor}>
+      <GlobalStyle bgColor={getTheme(themeName).backgroundColor} />
       <Content>
         <Header theme={theme} toggleTheme={toggleTheme} />
         <Hero theme={theme} />
-        <Body theme={theme} />
-        <Spacer></Spacer>
+        <Spacer />
         <Footer theme={theme} />
       </Content>
     </StyledApp>
   )
 }
 
-const GlobalStyle = createGlobalStyle`
-html{
-    height:100%;
+const GlobalStyle = createGlobalStyle<{ bgColor: string }>`
+html body{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    background-color: ${({ bgColor }) => bgColor};
+    transition: background-color 0.5s;
   }
-  body{
-    height:100%;
+
+  #root{
+    height:100%; 
+    width:100%;   
   }
-  /* #root{
-    height:100%;    
-  } */
 
 @media screen and (${devices.tablet}) {
   #root{
@@ -67,13 +58,12 @@ html{
 }
 `
 
-const StyledApp = styled(motion.div)<{ bgColor: string; textColor: string }>`
+const StyledApp = styled(motion.div)<{ textColor: string }>`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${({ bgColor }) => bgColor};
   color: ${({ textColor }) => textColor};
   padding: 0 36px;
   box-sizing: border-box;
@@ -82,17 +72,15 @@ const Content = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: auto 1fr auto auto auto;
-  max-width: 1080px;
+  grid-template-rows: auto auto 1fr auto;
+  max-width: 768px;
   width: 100%;
 
   @media screen and (${devices.tablet}) {
     grid-template-rows: auto auto auto 1fr auto;
   }
-  @media screen and (${devices.laptop}) {
-    max-width: 1200px;
-  }
 `
+
 const Spacer = styled.div`
   height: 100%;
 `

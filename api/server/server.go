@@ -32,21 +32,15 @@ func (handler *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.FileServer(http.Dir(handler.webPath)).ServeHTTP(w, r)
 	}
-
-	return
 }
 
 // New creates and launches a new http server
 func New(webPath string, api *api.API) *http.Server {
 	mime.AddExtensionType(".js", "text/javascript")
 
-	//! TODO: Remove selectAll endpoint.  Security issue!
-	http.HandleFunc("/api/selectAll", api.HandleSelectAll)
 	http.HandleFunc("/api/new", api.HandleNew)
 	handler := &RouteHandler{webPath: webPath, api: api}
 	http.Handle("/", handler)
-	// http.Handle("/static/", handler)
-	// http.Handle("/static/", handler)
 
 	server := &http.Server{Addr: fmt.Sprint(":", port), Handler: nil}
 
