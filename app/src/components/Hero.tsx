@@ -53,8 +53,11 @@ function Hero(props: Props) {
 }
 
 const StyledHero = styled(motion.div)`
+  height: 100%;
+  padding-bottom: 40px;
+
   @media screen and (${devices.tablet}) {
-    height: auto;
+    height: 100%;
     width: 100%;
     margin-top: 0;
   }
@@ -67,14 +70,13 @@ const Content = styled.div`
   align-items: center;
   @media screen and (${devices.tablet}) {
     flex-direction: row-reverse;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     width: 100%;
     margin-top: 0;
     height: 500px;
   }
 `
 const IllustrationSection = styled.div`
-  padding-top: 60px;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
@@ -107,15 +109,19 @@ const InputAndTagWrapper = styled.div`
   align-items: center;
   margin-top: auto;
 
+  > p {
+    max-width: 400px;
+    text-align: center;
+  }
+
   @media screen and (${devices.tablet}) {
     align-items: flex-start;
     padding-right: 40px;
     max-width: 400px;
     margin-top: 0;
-  }
-
-  > p {
-    max-width: 400px;
+    > p {
+      text-align: left;
+    }
   }
 `
 const TagLine = styled.em`

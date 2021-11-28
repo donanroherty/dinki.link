@@ -27,6 +27,7 @@ const StyledFooter = styled.div<{ linkColor: string }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: flex-end;
 
   a:link {
     color: ${({ linkColor }) => linkColor};

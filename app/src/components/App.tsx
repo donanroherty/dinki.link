@@ -29,7 +29,6 @@ function App() {
       <Content>
         <Header theme={theme} toggleTheme={toggleTheme} />
         <Hero theme={theme} />
-        <Spacer />
         <Footer theme={theme} />
       </Content>
     </StyledApp>
@@ -70,19 +69,16 @@ const StyledApp = styled(motion.div)<{ textColor: string }>`
 `
 const Content = styled.div`
   height: 100%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-template-columns: 100%;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto auto;
   max-width: 768px;
   width: 100%;
 
   @media screen and (${devices.tablet}) {
-    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-rows: auto auto auto;
   }
-`
-
-const Spacer = styled.div`
-  height: 100%;
 `
 
 export default App
