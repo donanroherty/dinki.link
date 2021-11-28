@@ -40,6 +40,7 @@ func (handler *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func New(webPath string, api *api.API) *http.Server {
 	mime.AddExtensionType(".js", "text/javascript")
 
+	//! TODO: Remove selectAll endpoint.  Security issue!
 	http.HandleFunc("/api/selectAll", api.HandleSelectAll)
 	http.HandleFunc("/api/new", api.HandleNew)
 	handler := &RouteHandler{webPath: webPath, api: api}

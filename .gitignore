@@ -5,3 +5,5 @@
 
 /api/bin
 db/.env
+
+/node_modules
