@@ -10,11 +10,7 @@ function Footer(props: Props) {
   return (
     <StyledFooter linkColor={props.theme.brandColor}>
       <div>
-        <a
-          href="http://ronandoherty.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="http://ronandoherty.com" target="_blank" rel="noopener noreferrer">
           <em>ronandoherty.com</em>
         </a>
         <motion.div>© Ronan Doherty 2020</motion.div>
@@ -31,6 +27,7 @@ const StyledFooter = styled.div<{ linkColor: string }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: flex-end;
 
   a:link {
     color: ${({ linkColor }) => linkColor};

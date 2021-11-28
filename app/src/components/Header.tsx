@@ -12,36 +12,26 @@ function Header(props: Props) {
   const { theme, toggleTheme } = props
 
   const navigateToRepo = () => {
-    window.open(
-      "https://github.com/donanroherty/dinki.link",
-      "_blank",
-      "noopener noreferrer"
-    )
+    window.open("https://github.com/donanroherty/dinki.link", "_blank", "noopener noreferrer")
   }
 
   return (
     <StyledHeader>
       <div>
-        <Brand color={theme.brandColor}>
-          Dinki Link <sup>v1.0.0-alpha</sup>
-        </Brand>
+        <Brand color={theme.brandColor}>Dinki Link</Brand>
       </div>
 
       <IconWrapper role="button" title="github repo" onClick={navigateToRepo}>
         <MotionThemeWrapper
           theme={theme}
-          render={themeDef => (
-            <Icon name="github" color={themeDef.textColor} size={22} />
-          )}
+          render={(themeDef) => <Icon name="github" color={themeDef.textColor} size={22} />}
         />
       </IconWrapper>
 
       <IconWrapper role="button" title="toggle theme" onClick={toggleTheme}>
         <MotionThemeWrapper
           theme={theme}
-          render={themeDef => (
-            <Icon name="daynight" color={themeDef.textColor} size={24} />
-          )}
+          render={(themeDef) => <Icon name="daynight" color={themeDef.textColor} size={24} />}
         />
       </IconWrapper>
     </StyledHeader>
