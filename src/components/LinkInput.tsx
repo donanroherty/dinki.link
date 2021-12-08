@@ -101,6 +101,7 @@ const LinkInput = () => {
   }
 
   const reset = async () => {
+    setInputValue("")
     setAnimState("reset")
 
     await new Promise((r) => setTimeout(r, 1000))
@@ -216,6 +217,13 @@ const Button = styled(motion.div)`
   box-sizing: border-box;
   overflow: hidden;
   user-select: none;
+
+  &:hover {
+    background-color: #9fc7ff;
+  }
+  &:active {
+    background-color: #73a6ec;
+  }
 `
 const ConvertButton = styled(Button)`
   width: 90px;

@@ -71,6 +71,8 @@ func New(w http.ResponseWriter, r *http.Request) {
 	body := make(map[string]interface{})
 	body["short_id"] = id
 
+	w.Header().Add("Content-Type", "application/json")
+
 	err = json.NewEncoder(w).Encode(body)
 	if err != nil {
 		lib.HandleApiErr(w, err, http.StatusInternalServerError)
