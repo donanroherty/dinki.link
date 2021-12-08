@@ -34,3 +34,20 @@ func GetFirestore(ctx context.Context) (*firestore.Client, error) {
 
 	return firestore, err
 }
+
+func GetLinksCollection(ctx context.Context) (*firestore.CollectionRef, error) {
+	fs, err := GetFirestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	env := os.Getenv("VERCEL_ENV")
+
+	table := "links"
+	if env == "development" || env == "preview" {
+		table = "links_dev"
+	}
+
+	col := fs.Collection(table)
+	return col, nil
+}

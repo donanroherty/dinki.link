@@ -20,19 +20,20 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	fs, err := lib.GetFirestore(ctx)
+
+	col, err := lib.GetLinksCollection(ctx)
 	if err != nil {
 		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	_, err = fs.Collection("links").Documents(ctx).Next()
+	_, err = col.Documents(ctx).Next()
 	if err != nil {
 		lib.HandleApiErr(w, err, http.StatusNotFound)
 		return
 	}
 
-	q := fs.Collection("links").Where("short_id", "==", id)
+	q := col.Where("short_id", "==", id)
 	v, err := q.Documents(ctx).Next()
 	if err != nil {
 		if err == iterator.Done {

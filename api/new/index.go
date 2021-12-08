@@ -34,13 +34,11 @@ func New(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%v", u)
 
 	ctx := context.Background()
-	fs, err := lib.GetFirestore(ctx)
+	col, err := lib.GetLinksCollection(ctx)
 	if err != nil {
 		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
 	}
-
-	col := fs.Collection("links")
 
 	// generate a new link
 	id, err := genUniqueID(col, w)
