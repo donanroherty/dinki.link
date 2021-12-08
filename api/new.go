@@ -10,11 +10,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/donanroherty/dinkilink/lib"
+	"google.golang.org/api/iterator"
 )
-
-// LinkRequest represents incomming body data for /new endpoint
-
-// LinkResponse represents outgoing response data
 
 func New(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
@@ -33,14 +30,14 @@ func New(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&lReq)
 	if err != nil {
-		lib.HandleApiErr("JSON decoding failed", err, w)
+		lib.HandleApiErr("New", "JSON decoding failed", err, w)
 		return
 	}
 
 	ctx := context.Background()
 	fs, err := lib.GetFirestore(ctx)
 	if err != nil {
-		lib.HandleApiErr("GetFirestore failed", err, w)
+		lib.HandleApiErr("New", "GetFirestore failed", err, w)
 		return
 	}
 
@@ -48,7 +45,7 @@ func New(w http.ResponseWriter, r *http.Request) {
 
 	id, err := genUniqueID(col, w)
 	if err != nil {
-		lib.HandleApiErr("", err, w)
+		lib.HandleApiErr("New", "Failure generating UID", err, w)
 		return
 	}
 
@@ -61,7 +58,7 @@ func New(w http.ResponseWriter, r *http.Request) {
 
 	_, _, err = col.Add(ctx, doc)
 	if err != nil {
-		lib.HandleApiErr("Failed to add doc to firebase:", err, w)
+		lib.HandleApiErr("New", "Failure adding doc to firebase:", err, w)
 		return
 	}
 
@@ -71,33 +68,28 @@ func New(w http.ResponseWriter, r *http.Request) {
 
 	err = json.NewEncoder(w).Encode(res)
 	if err != nil {
-		lib.HandleApiErr("Failed to encode response", err, w)
+		lib.HandleApiErr("New", "Failed to encode response", err, w)
 		return
 	}
 
-	log.Printf("Successfully created: %v\n", doc)
+	log.Printf("New", "Successfully created: %v\n", doc)
 }
 
 // genUniqueID generates a new ID, ensuring that ID is not already used on the database
 func genUniqueID(col *firestore.CollectionRef, w http.ResponseWriter) (string, error) {
-	unique := false
+	isUnique := false
 	attempts := 0
 	var id string
 
-	for !unique && attempts < 5 {
+	for !isUnique && attempts < 5 {
 		id = lib.ShortID(4)
 		q := col.Where("ID", "==", id)
-		docs, err := q.Documents(context.Background()).GetAll()
-
-		if err != nil {
-			return "", err
-		}
-
-		unique = len(docs) == 0
+		_, err := q.Documents(context.Background()).Next()
+		isUnique = err == iterator.Done
 		attempts++
 	}
 
-	if !unique || len(id) == 0 {
+	if !isUnique || len(id) == 0 {
 		return "", fmt.Errorf("error generating unique ID")
 	}
 

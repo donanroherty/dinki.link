@@ -1,9 +1,8 @@
 package lib
 
 type Link struct {
-	id        int
-	URL       string
-	ShortID   string
-	Hits      int
-	DateAdded string
+	URL       string `json:"url"`
+	ShortID   string `json:"short_id"`
+	Hits      int    `json:"hits"`
+	DateAdded string `json:"date_added"`
 }
