@@ -1,13 +1,11 @@
 {
-  "name": "dinkilink",
-
   "routes": [
     {
-      "src": "/new",
+      "src": "/api/new",
       "dest": "api/new"
     },
     {
-      "src": "/(?<id>[^/]+)",
+      "src": "/(?<id>([A-Za-z0-9]){4})",
       "dest": "/api/redirect?id=$id"
     }
   ]
