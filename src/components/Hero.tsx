@@ -1,10 +1,10 @@
-import React, { useRef } from "react"
+import React from "react"
 import styled from "styled-components/macro"
 import LinkInput from "./LinkInput"
 import { motion } from "framer-motion"
 import { Theme } from "../theme/theme"
-import { THEME_ANIM_DURATION } from "./App"
 import { devices } from "../theme/style"
+import Illustration from "./Illustration"
 import "styled-components/macro"
 
 type Props = {
@@ -13,32 +13,10 @@ type Props = {
 function Hero(props: Props) {
   const { theme } = props
 
-  const ref = useRef<HTMLDivElement>(null)
-
   return (
-    <StyledHero ref={ref} id="hero">
+    <StyledHero id="hero">
       <Content>
-        <IllustrationSection>
-          <div>
-            <img
-              width="100%"
-              src="./assets/vector/illustration-night.svg"
-              alt="illustration-night"
-            />
-          </div>
-          <div>
-            <motion.img
-              width="100%"
-              src="./assets/vector/illustration-day.svg"
-              alt="illustration-day"
-              initial={{ opacity: theme.name === "dark" ? 0 : 1 }}
-              animate={{
-                opacity: theme.name === "dark" ? 0 : 1,
-              }}
-              transition={{ duration: THEME_ANIM_DURATION }}
-            />
-          </div>
-        </IllustrationSection>
+        <Illustration theme={theme} />
 
         <InputAndTagWrapper>
           <TagLine>Make your linky dinki</TagLine>
@@ -54,7 +32,7 @@ function Hero(props: Props) {
 
 const StyledHero = styled(motion.div)`
   height: 100%;
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 
   @media screen and (${devices.tablet}) {
     height: 100%;
@@ -70,36 +48,9 @@ const Content = styled.div`
   align-items: center;
   @media screen and (${devices.tablet}) {
     flex-direction: row-reverse;
-    /* justify-content: space-between; */
     width: 100%;
     margin-top: 0;
     height: 500px;
-  }
-`
-const IllustrationSection = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  align-items: center;
-  height: 100%;
-
-  @media screen and (${devices.tablet}) {
-    width: 100%;
-    padding-top: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-
-  > div {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    > img {
-      margin-left: auto;
-      max-width: 600px;
-    }
   }
 `
 const InputAndTagWrapper = styled.div`

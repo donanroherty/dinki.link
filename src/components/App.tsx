@@ -71,14 +71,8 @@ const Content = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  grid-template-columns: 100%;
-  grid-template-rows: auto auto auto;
   max-width: 768px;
   width: 100%;
-
-  @media screen and (${devices.tablet}) {
-    grid-template-rows: auto auto auto;
-  }
 `
 
 export default App
