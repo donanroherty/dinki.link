@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -25,7 +26,13 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	q := fs.Collection("links").Where("ShortID", "==", id)
+	_, err = fs.Collection("links").Documents(ctx).Next()
+	if err != nil {
+		lib.HandleApiErr(w, err, http.StatusNotFound)
+		return
+	}
+
+	q := fs.Collection("links").Where("short_id", "==", id)
 	v, err := q.Documents(ctx).Next()
 	if err != nil {
 		if err == iterator.Done {
@@ -37,12 +44,13 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if v.Data()["url"] == nil {
-		lib.HandleApiErr(w, fmt.Errorf("malformed json"), http.StatusInternalServerError)
+	iurl, ok := v.Data()["url"]
+	if !ok {
+		lib.HandleApiErr(w, fmt.Errorf("could not find key ['url] in query result"), http.StatusInternalServerError)
 		return
 	}
 
-	strUrl := v.Data()["url"].(string)
+	strUrl := iurl.(string)
 
 	u, err := url.Parse(strUrl)
 	if err != nil {
@@ -59,4 +67,5 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	final := scheme + strUrl
 
 	http.Redirect(w, r, final, http.StatusPermanentRedirect)
+	log.Printf("redirect successful: %s -> %s", id, final)
 }

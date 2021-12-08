@@ -49,7 +49,7 @@ const circleVars: AnimVariants = {
 const busyIndicatorVars: AnimVariants = {
   initial: { opacity: 0 },
   busy: { opacity: 1 },
-  preResult: { opacity: 0 },
+  preResult: { opacity: 1 },
   result: { opacity: 0 },
   reset: {},
 }
@@ -59,8 +59,6 @@ const spring: Spring = {
   damping: 20,
   stiffness: 100,
 }
-
-const DEV = !process.env.NODE_ENV || process.env.NODE_ENV === "development"
 
 const LinkInput = () => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -86,22 +84,17 @@ const LinkInput = () => {
     await new Promise((r) => setTimeout(r, 1000))
     setAnimState("preResult")
     await new Promise((r) => setTimeout(r, 500))
-    setAnimState("result")
-
-    const url = DEV ? "http://localhost/api/new" : "/api/new"
 
     const res = await Axios({
       method: "POST",
-      url: url,
+      url: "/api/new",
       data: {
-        URL: inputValue,
+        url: inputValue,
       },
     })
 
-    const host = `${DEV ? "localhost" : "dinki.link"}`
-
-    if (res.data.ShortID !== undefined) {
-      setOutputDinkiLink(`${host}/${res.data.ShortID}`)
+    if (res.data.short_id !== undefined) {
+      setOutputDinkiLink(`${window.location}${res.data.short_id}`)
     }
 
     setAnimState("result")
@@ -154,8 +147,6 @@ const LinkInput = () => {
             name="Link Output"
             id="link-input"
             onChange={handleLinkInput}
-            // value={inputValue}
-            // placeholder={"feed me links (￣﹃￣)"}
             placeholder={"enter a link..."}
             value={animState === "result" || animState === "reset" ? outputDinkiLink : inputValue}
             readOnly={animState === "result" || animState === "reset"}
