@@ -9,10 +9,11 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/api/cmd/app",
-      "env": {} ,
-      "envFile": "${workspaceFolder}/db/.env",
-      "args": ["-dbhost", "localhost", "-webpath", "${workspaceFolder}/api/static"]
+      "program": "${workspaceFolder}/api/cmd/main.go",
+      "env": {},
+      "envFile": "${workspaceFolder}/api/.env",
+      "args": ["-dbhost", "localhost", "-webpath", "${workspaceFolder}/api/static"],
+      "showLog": true
     },
     {
       "name": "Attach to API",
@@ -20,8 +21,8 @@
       "request": "attach",
       "mode": "remote",
       "remotePath": "",
-      "port": 40000,
-      "host": "127.0.0.1",
+      "host": "localhost",
+      "port": 9229,
       "showLog": true
     }
   ]
