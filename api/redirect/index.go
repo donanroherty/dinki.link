@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 
@@ -15,15 +14,14 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	qs := r.URL.Query()
 	id := qs.Get("id")
 	if len(id) == 0 {
-		lib.HandleApiErr("Redirect", "id query param not found", fmt.Errorf("id query param not found"), w)
+		lib.HandleApiErr(w, fmt.Errorf("'id' query param not found"), http.StatusNotFound)
 		return
 	}
 
 	ctx := context.Background()
 	fs, err := lib.GetFirestore(ctx)
 	if err != nil {
-		lib.HandleApiErr("Redirect", "error getting firestore", err, w)
-		// todo: Internal server error
+		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
 	}
 
@@ -31,25 +29,24 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	v, err := q.Documents(ctx).Next()
 	if err != nil {
 		if err == iterator.Done {
-			lib.HandleApiErr("Redirect", "link with short id not found", err, w)
+			lib.HandleApiErr(w, err, http.StatusNotFound)
 			return
 		}
 
-		lib.HandleApiErr("Redirect", "", err, w)
+		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	if v.Data()["URL"] == nil {
-		lib.HandleApiErr("Redirect", "malformed json", fmt.Errorf("malformed json"), w)
+	if v.Data()["url"] == nil {
+		lib.HandleApiErr(w, fmt.Errorf("malformed json"), http.StatusInternalServerError)
 		return
 	}
 
-	strUrl := v.Data()["URL"].(string)
+	strUrl := v.Data()["url"].(string)
 
 	u, err := url.Parse(strUrl)
 	if err != nil {
-		log.Println(err)
-		lib.HandleApiErr("Redirect", "malformed json", fmt.Errorf("malformed json"), w)
+		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
 	}
 

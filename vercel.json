@@ -1,24 +1,14 @@
 {
   "name": "dinkilink",
 
-  "builds": [
-    {
-      "src": "api/new.go",
-      "use": "@vercel/go"
-    },
-    {
-      "src": "api/redirect.go",
-      "use": "@vercel/go"
-    }
-  ],
   "routes": [
     {
       "src": "/new",
-      "dest": "api/new.go"
+      "dest": "api/new"
     },
     {
       "src": "/(?<id>[^/]+)",
-      "dest": "/api/redirect.go?id=$id"
+      "dest": "/api/redirect?id=$id"
     }
   ]
 }
