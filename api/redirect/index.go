@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"cloud.google.com/go/firestore"
 	"github.com/donanroherty/dinkilink/lib"
 	"google.golang.org/api/iterator"
 )
@@ -34,7 +35,7 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	}
 
 	q := col.Where("short_id", "==", id)
-	v, err := q.Documents(ctx).Next()
+	linkData, err := q.Documents(ctx).Next()
 	if err != nil {
 		if err == iterator.Done {
 			lib.HandleApiErr(w, err, http.StatusNotFound)
@@ -45,15 +46,24 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	iurl, ok := v.Data()["url"]
+	iurl, ok := linkData.Data()["url"]
 	if !ok {
-		lib.HandleApiErr(w, fmt.Errorf("could not find key ['url] in query result"), http.StatusInternalServerError)
+		lib.HandleApiErr(w, fmt.Errorf("could not find key ['url'] in query result"), http.StatusInternalServerError)
 		return
 	}
 
-	strUrl := iurl.(string)
+	hits, ok := linkData.Data()["hits"]
+	if !ok {
+		lib.HandleApiErr(w, fmt.Errorf("could not find key ['hits'] in query result"), http.StatusInternalServerError)
+		return
+	}
 
-	u, err := url.Parse(strUrl)
+	fHits := hits.(float64) + 1
+	linkData.Ref.Set(ctx, map[string]interface{}{"hits": fHits}, firestore.MergeAll)
+
+	sUrl := iurl.(string)
+
+	u, err := url.Parse(sUrl)
 	if err != nil {
 		lib.HandleApiErr(w, err, http.StatusInternalServerError)
 		return
@@ -65,7 +75,7 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 		scheme = "https://"
 	}
 
-	final := scheme + strUrl
+	final := scheme + sUrl
 
 	http.Redirect(w, r, final, http.StatusPermanentRedirect)
 	log.Printf("redirect successful: %s -> %s", id, final)
