@@ -101,6 +101,7 @@ const LinkInput = () => {
   }
 
   const reset = async () => {
+    setInputValue("")
     setAnimState("reset")
 
     await new Promise((r) => setTimeout(r, 1000))
