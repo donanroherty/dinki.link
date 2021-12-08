@@ -1,4 +1,4 @@
-package randomid
+package lib
 
 import (
 	"math/rand"
@@ -11,12 +11,12 @@ const (
 	Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 )
 
-// New generates a random id of a given size
-func New(size int) string {
+// ShortID generates a random id of a given size
+func ShortID(size int) string {
 	// Seed a new source with current time
 	src := rand.NewSource(time.Now().UnixNano())
 
-	// Create a new roand from source
+	// Create a new rand from source
 	r := rand.New(src)
 
 	var id string
@@ -35,7 +35,7 @@ func IsValidID(input string, validLength int) bool {
 		return false
 	}
 	for _, char := range input {
-		if strings.Contains(Alphabet, string(char)) == false {
+		if strings.Contains(Alphabet, string(char)) {
 			return false
 		}
 	}
